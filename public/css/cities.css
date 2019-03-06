@@ -1,0 +1,27 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+
+a img
+{
+	overflow: hidden;
+	border: none !important;
+}
+.img-fluid:hover
+{
+	
+	transition: transform ease-out 0.8s;
+}
+a img:hover
+{
+	transform: scale(1.04);
+}
