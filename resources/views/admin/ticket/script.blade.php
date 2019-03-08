@@ -62,7 +62,8 @@ console.log('asdf');
             var seats = $('#total_seats').val();
             var discount = $('#discount').val();
             var total_fare = seats * fare - discount
-            $('#return').text( recived - total_fare );
+            var ret = recived - total_fare
+            $('#return').text( ret >= 0 ? ret : 0 );
         });
 
         $('input[name="p_cnic"]').on('keypress change',function(){

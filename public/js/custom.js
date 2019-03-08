@@ -369,6 +369,7 @@ function fareCalculate(){
 	var discount = $('#discount').val();
 	$('#total_fare').text(seats*fare);
 	$('#payable_fare').text((seats*fare)-discount);
+	$('#amount_paid').attr('min', ((seats*fare)-discount))
 }
 function cancelTicket(url)
 {

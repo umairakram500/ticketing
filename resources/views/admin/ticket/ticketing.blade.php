@@ -320,7 +320,7 @@ if($routeID > 0){
                     </tr>
                     <tr>
                         <th>Discount</th>
-                        <td><input type="text" value="" id="discount" class="form-control"></td>
+                        <td><input type="text" value="" id="discount" name="discount" class="form-control"></td>
                     </tr>
                     <tr>
                         <th>Discounted Fare</th>
@@ -328,7 +328,7 @@ if($routeID > 0){
                     </tr>
                     <tr>
                         <th>Amount Paid</th>
-                        <td><input type="text" id="amount_paid" value="" class="form-control" required></td>
+                        <td><input type="number"  id="amount_paid" value="" class="form-control" required></td>
                     </tr>
                     <tr>
                         <th>Return Back</th>
