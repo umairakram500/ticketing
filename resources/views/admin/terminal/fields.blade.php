@@ -45,8 +45,28 @@
 
 </div>
 
+<?php
+
+$oldexps = old('expenses');
+if($oldexps != null){
+    $expenses = $oldexps;
+}
+?>
 
     <div class="row gutter">
+        <div class="col-md-6">
+            <label><strong>Terminal Expenses</strong></label>
+            <?php $exps = \App\Models\ExpenseType::where('terminal_deduct', 1)->get() ?>
+            <table class="table table-bordered">
+                @forelse($exps as $exp)
+                    <tr>
+                        <td>{{ $exp->title }}</td>
+                        <td><input type="number" name="expenses[{{ $exp->id }}]" class="form-control" value="{{ $expenses[$exp->id] ?? $exp->amount }}"></td>
+                    </tr>
+                @empty
+                @endforelse
+            </table>
+        </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('refcode', 'Reference Number') }}
@@ -61,23 +81,6 @@
                        {{ (isset($terminal) && $terminal->status) || !isset($terminal) ? 'checked' : '' }} id="status">
                 <label for="stutus">Active</label>
             </div>
-        </div>
-    </div>
-
-
-    <div class="row gutter">
-        <div class="col-md-6">
-            <strong>Terminal Expenses</strong>
-            <?php $exps = \App\Models\ExpenseType::TerminalExp() ?>
-            <table class="table table-bordered">
-            @forelse($exps as $expid => $expname)
-                    <tr>
-                        <td>{{ $expname }}</td>
-                        <td><input type="number" class="form-control"></td>
-                    </tr>
-                @empty
-            @endforelse
-            </table>
         </div>
     </div>
 

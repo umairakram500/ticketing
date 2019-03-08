@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\City;
+use App\Models\ExpensetypeTerminal;
 use App\Models\Terminal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -29,7 +30,8 @@ class TerminalController extends Controller
     public function create()
     {
         $cities = City::selection('name');
-        return view("admin.terminal.create", ['cities' => $cities]);
+
+        return view("admin.terminal.create", ['cities' => $cities, 'expenses' => []]);
     }
 
     /**
@@ -59,6 +61,7 @@ class TerminalController extends Controller
         $terminal->terminal_type      = $request->terminal_type;
 
         if($terminal->save()){
+            $this->saveExpenses($terminal, $request->expenses);
             Session::flash('flash_success', 'Terminal added successfully');
             return redirect()->route('admin.terminal.index');
         }
@@ -83,9 +86,11 @@ class TerminalController extends Controller
      */
     public function edit(Terminal $terminal)
     {
-        $cities = City::selection('name');
+        $data['cities'] = City::selection('name');
+        $data['terminal'] = $terminal;
+        $data['expenses'] = $terminal->expenses->pluck('amount', 'expensetype_id');
 
-        return view("admin.terminal.edit", ['terminal' => $terminal, 'cities' => $cities]);
+        return view("admin.terminal.edit", $data);
     }
 
     /**
@@ -116,6 +121,7 @@ class TerminalController extends Controller
         $terminal->terminal_type = $request->terminal_type;
 
         if($terminal->save()){
+            $this->saveExpenses($terminal, $request->expenses);
             Session::flash('flash_success', 'Terminal updated successfully');
             return redirect()->route('admin.terminal.index');
         }
@@ -169,6 +175,18 @@ class TerminalController extends Controller
 
         return response($response);
 
+    }
 
+    public function saveExpenses($terminal, $expenses)
+    {
+        if(count($expenses))
+        {
+            foreach($expenses as $expid => $expamt){
+                ExpensetypeTerminal::updateOrCreate(
+                    [ 'terminal_id' => $terminal->id, 'expensetype_id' => $expid ],
+                    [ 'amount' => $expamt ]
+                );
+            }
+        }
     }
 }

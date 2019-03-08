@@ -305,7 +305,13 @@ if($routeID > 0){
                     <tr>
                         <th width="120">Fare</th>
                         <td class="fare">
-                            <input type="text" value="" name="fare" id="fare" class="form-control" required>
+                            <input type="text" value="" name="fare" id="fare" class="form-control" required readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="120">Discounted Ticket Fare</th>
+                        <td class="fare">
+                            <input type="text" value="" name="fare" id="disfare" class="form-control" required>
                         </td>
                     </tr>
                     <tr>

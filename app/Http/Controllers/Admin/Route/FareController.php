@@ -67,7 +67,7 @@ class FareController extends Controller
         $ids = array_column($route->stops->toArray(), 'terminal_id');
         $fares = Fare::Fares()->where('route_id', $route->id)->get()->toArray();
         $data['combiations'] = $this->getCombinations($ids);
-        $data['terminals'] = Terminal::whereIn('id',$ids)->selection();
+        $data['terminals'] = Terminal::whereIn('id',$ids)->with('city:id,name')->get()->pluck('city.name', 'id');
         $data['bus_types'] = LuxuryType::Selection();
         $data['route'] = $route;
         $data['fares'] = $this->toSelect($fares, 'fare', 'fare_id');

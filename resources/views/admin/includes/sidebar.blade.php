@@ -236,7 +236,7 @@
                 <span class="menu-item">Expense Types</span>
             </a>
         </li>
-        
+
         {{--@endif--}}
 
                 <!-- cargo -->

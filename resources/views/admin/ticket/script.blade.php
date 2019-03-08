@@ -13,7 +13,7 @@
 
 @push('after-js')
 <script>
-<?php //dd($stopovers) ?>
+<?php // dd($stopovers) ?>
 
     @if(isset($stopovers))
     stopovers = JSON.parse('{!! isset($stopovers) ? json_encode($stopovers) : '' !!}');
@@ -34,26 +34,35 @@ console.log('asdf');
 
         $('#route').select2();
 
-        $('#total_seats').on('keyup change',function(){
-            var fare = $('#fare').val();
+        $('#total_seats, #disfare').on('keyup change',function(){
+           /* var fare = $('#fare').val();
+            if($('#disfare').length)
+                fare = $('#disfare').val();
             var seats = $(this).val();
             var discount = $('#discount').val();
             $('#total_fare').text(seats*fare);
-            $('#payable_fare').text((seats*fare)-discount);
+            $('#payable_fare').text((seats*fare)-discount);*/
+            fareCalculate();
         });
         $('#discount').on('keyup change',function(){
-            var fare = $('#fare').val();
+            /*var fare = $('#fare').val();
+            if($('#disfare').length)
+                fare = $('#disfare').val();
             var seats = $('#total_seats').val();
             var discount = $('#discount').val();
-            console.log(seats, fare);
-            $('#payable_fare').text((seats*fare)-discount);
+            // console.log(seats, fare);
+            $('#payable_fare').text((seats*fare)-discount);*/
+            fareCalculate();
         });
         $('#amount_paid').on('keyup change',function(){
+            var fare = $('#fare').val();
+            /*if($('#disfare').length)
+                fare = $('#disfare').val();*/
             var recived = $(this).val();
             var seats = $('#total_seats').val();
             var discount = $('#discount').val();
-            var fare = $('#fare').val();
-            $('#return').text(recived-(seats*fare)-discount);
+            var total_fare = seats * fare - discount
+            $('#return').text( recived - total_fare );
         });
 
         $('input[name="p_cnic"]').on('keypress change',function(){
@@ -206,7 +215,7 @@ console.log('asdf');
             fare = 0;
         }
 
-        $('#fare').val(parseInt(fare));
+        $('#fare, #disfare').val(parseInt(fare));
         $('#total_seats').trigger('change');
     }
 

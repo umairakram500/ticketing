@@ -352,10 +352,24 @@ function setSeat(){
 
 	});
 	$('#total_seats').val(seats.length);
-	$('#total_fare, #payable_fare').text(seats.length*$('#fare').val());
+	/*var fare = $('#fare').val();
+	if($('#disfare').length)
+		fare = $('#disfare').val();
+	$('#total_fare, #payable_fare').text(seats.length*fare);*/
 	$('input[name="seat_numbers"]').val(seat_no.substr(1));
+	fareCalculate();
 }
-
+function fareCalculate(){
+	var fare = $('#fare').val();
+	var seats = $('#total_seats').val();
+	if($('#disfare').length){
+		// fare = $('#disfare').val();
+		$('#discount').val( ($('#fare').val()*seats) - ($('#disfare').val()*seats) );
+	}
+	var discount = $('#discount').val();
+	$('#total_fare').text(seats*fare);
+	$('#payable_fare').text((seats*fare)-discount);
+}
 function cancelTicket(url)
 {
 	var txt;

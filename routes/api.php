@@ -24,3 +24,10 @@ Route::post('users/login', 'APILoginController@login')->name('api.login');
 Route::middleware('jwt.auth')->get('users', function(Request $request) {
     return auth()->user();
 });
+
+Route::namespace('Api')->name('api.')->group(function () {
+
+    Route::get('routes', 'RouteController@index');
+    Route::get('routes/{route}/info', 'RouteController@info');
+
+});

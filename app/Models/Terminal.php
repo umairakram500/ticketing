@@ -53,6 +53,10 @@ class Terminal extends Model
         return $this->hasMany(Stop::class);
     }
 
+    public function expenses(){
+        return $this->hasMany(ExpensetypeTerminal::class);
+    }
+
     /*----------------  SCOPES  ----------------*/
 
 

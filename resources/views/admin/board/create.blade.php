@@ -77,15 +77,18 @@
             <div class="row gutter">
                 <div class="col-sm-6" ng-app="">
                     <label for=""><strong>Terminal Expenses *</strong></label>
-                    <?php $expenses = \App\Models\ExpenseType::where([
+                    <?php
+                    $expenses = \App\Models\ExpenseType::where([
                             ['terminal_deduct', 1],
                             ['status', 1]
-                    ])->get() ?>
+                    ])->get();
+                    $ter_exps = \App\Models\ExpensetypeTerminal::where('terminal_id', Auth::user()->terminal_id)->get()->pluck('amount', 'expensetype_id');
+                    ?>
                     <table class="table table-bordered">
                         @forelse($expenses as $expense)
                             <tr>
                                 <td>{{ $expense->title }}</td>
-                                <td>{{ Form::text('exp['.$expense->id.']', $expense->amount, ['class' => 'form-control'])}}</td>
+                                <td>{{ Form::text('exp['.$expense->id.']', ($ter_exps[$expense->id] ?? 0), ['class' => 'form-control'])}}</td>
                             </tr>
                         @empty
                         @endforelse
