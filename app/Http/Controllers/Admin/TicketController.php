@@ -220,10 +220,10 @@ class TicketController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Schedule $schedule, Ticket $ticket)
+    public function destroy(Ticket $ticket)
     {
-        $schedule->avail_seats += $ticket->total_seats;
-        $schedule->save();
+        /*$schedule->avail_seats += $ticket->total_seats;
+        $schedule->save();*/
         $ticket->seats()->delete();
         $ticket->delete();
         return response(['status' => 1, 'msg' => 'Ticket Successfully Cancelled']);
@@ -285,10 +285,10 @@ class TicketController extends Controller
             $data['ticket'] = $ticket;
             $data['deduction'] = $this->refundDetection($ticket);
 
-            //$ticket->seats()->delete();
-            //$ticket->status = 0;
-            //$ticket->save();
-            //$ticket->delete();
+            $ticket->seats()->delete();
+            $ticket->status = 0;
+            $ticket->save();
+            $ticket->delete();
 
         } else
             $data = array('error' => 1, 'msg' => 'Ticket Not found');
