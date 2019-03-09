@@ -217,7 +217,9 @@ console.log('asdf');
         }
 
         $('#fare, #disfare').val(parseInt(fare));
-        $('#total_seats').trigger('change');
+        $('#disfare').attr('max', parseInt(fare));
+        //$('#total_seats').trigger('change');
+        fareCalculate();
     }
 
 

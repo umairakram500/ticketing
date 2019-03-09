@@ -311,7 +311,7 @@ if($routeID > 0){
                     <tr>
                         <th width="120">Discounted Ticket Fare</th>
                         <td class="fare">
-                            <input type="text" value="" name="fare" id="disfare" class="form-control" required>
+                            <input type="number" value="" name="disfare" id="disfare" class="form-control" required>
                         </td>
                     </tr>
                     <tr>
@@ -320,7 +320,7 @@ if($routeID > 0){
                     </tr>
                     <tr>
                         <th>Discount</th>
-                        <td><input type="text" value="" id="discount" name="discount" class="form-control"></td>
+                        <td><input type="text" value="" readonly id="discount" name="discount" class="form-control"></td>
                     </tr>
                     <tr>
                         <th>Discounted Fare</th>
@@ -342,7 +342,11 @@ if($routeID > 0){
     {!! Form::close() !!}
 
     @include('admin.ticket.script')
-
+<style>
+    .form-control[readonly]{
+        background-color: #dddddd;
+    }
+</style>
 
 @endsection
 
