@@ -153,8 +153,8 @@ class TicketController extends Controller
                 }
                 $ticket->seats()->saveMany($seats);
             }
-            $msg = $ticket->paid ? 'Ticket added successfully' : 'Seat(s) booked successfully';
-            Session::flash('flash_success', 'Ticket added successfully');
+            $msg = $ticket->paid ? 'Ticket added successfully' : 'Seat(s) booked successfully.\nBooking ID: '.$ticket->id;
+            Session::flash('flash_success', $msg);
             if (!$ticket->paid)
                 return redirect()->back()->withInput([
                     'booking_date' => $request->booking_date,

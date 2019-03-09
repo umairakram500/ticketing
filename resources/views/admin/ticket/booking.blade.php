@@ -118,9 +118,9 @@ if($routeID > 0){
                     <?php $schedules = old('schedules'); ?>
                     @if($routeID > 0)
                         <?php
-                                if($schedule_id > 0){
-                                    $schedule = \App\Models\Schedule::find($schedule_id);
-                                }
+                        if($schedule_id > 0){
+                            $schedule = \App\Models\Schedule::find($schedule_id);
+                        }
                         $schedules = \App\Models\Schedule::where('route_id', $routeID)->get();
 
                         $routefares = \App\Models\Route\Fare::where('route_id', $routeID)->get()->toArray();
@@ -133,7 +133,7 @@ if($routeID > 0){
                             $stopovers = $fares[$schedule->luxury_type];
                         }
                         ?>
-                        @include('admin.ticket.getSchedules', $schedules);
+                        @include('admin.ticket.getSchedules');
                     @else
                     <tr>
                         <td colspan="12" class="text-center">No data</td>
