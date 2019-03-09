@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Schedule Tickets')
-@section('sub-title', "List of Ticket of Schedule")
+@section('title', $title)
+
 
 @section('content')
 

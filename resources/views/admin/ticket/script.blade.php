@@ -34,7 +34,7 @@ console.log('asdf');
 
         $('#route').select2();
 
-        $('#total_seats, #disfare').on('keyup change',function(){
+        $('#total_seats, #disfare, #fare').on('keyup change', function(){
            /* var fare = $('#fare').val();
             if($('#disfare').length)
                 fare = $('#disfare').val();
@@ -242,6 +242,26 @@ console.log('asdf');
                 }
             });
         }
+    }
+
+    function getList( listof )
+    {
+        var bookingdate = $('#bookingdate').val();
+        var schedule = $('#schedules tr.active').data('schedule');
+
+        if(schedule == undefined || schedule == ''){
+            alert('Schedule not selected');
+            return false;
+        }
+        if(bookingdate == undefined || bookingdate == ''){
+            alert('Select booking date');
+            return false;
+        }
+
+        var url = '{{ url('admin/ticket') }}/'+listof+'/'+schedule+'/'+bookingdate;
+
+
+        window.open( url, '_blank');
     }
 
 

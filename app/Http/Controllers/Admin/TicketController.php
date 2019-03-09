@@ -156,7 +156,14 @@ class TicketController extends Controller
             $msg = $ticket->paid ? 'Ticket added successfully' : 'Seat(s) booked successfully';
             Session::flash('flash_success', 'Ticket added successfully');
             if (!$ticket->paid)
-                return redirect()->back()->withInput();
+                return redirect()->back()->withInput([
+                    'booking_date' => $request->booking_date,
+                    'route' => $request->route ,
+                    'from_stop' => $request->from_stop ,
+                    'to_stop' => $request->to_stop ,
+                    'route_id' => $request->route_id ,
+                    'schedule_id' => $request->schedule_id ,
+                ]);
             else
                 return redirect()->route('admin.ticket.show', $ticket->id);
         }
@@ -338,14 +345,16 @@ class TicketController extends Controller
 
     public function booklist(Request $req)
     {
-        $tickets = Ticket::where([['schedule_id', $req->schedule], ['paid', 0]])->whereDate('booking_for', $req->bookingdate)->get();
-        return view('admin.ticket.list', compact('tickets'));
+        $data['tickets'] = Ticket::where([['schedule_id', $req->schedule], ['paid', 0]])->whereDate('booking_for', $req->bookingdate)->get();
+        $data['title'] = 'Ticket Booking List';
+        return view('admin.ticket.list', $data);
     }
 
     public function issuelist(Request $req)
     {
-        $tickets = Ticket::where([['schedule_id', $req->schedule], ['paid', 1]])->whereDate('booking_for', $req->bookingdate)->get();
-        return view('admin.ticket.list', compact('tickets'));
+        $data['tickets'] = Ticket::where([['schedule_id', $req->schedule], ['paid', 1]])->whereDate('booking_for', $req->bookingdate)->get();
+        $data['title'] = 'Ticket Issue List';
+        return view('admin.ticket.list', $data);
     }
 
     public function issueByID($id, Request $request)

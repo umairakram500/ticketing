@@ -259,12 +259,12 @@ if($routeID > 0){
 
                 <div class="col-md-12">
                     <div class="form-group">
-                        <button class="btn btn-success btn-block py-3"><span class="h4">Book Seats</span></button>
+                        <button  class="btn btn-success btn-block py-3"><span class="h4">Book Seats</span></button>
                     </div>
                     <div class="row guttor">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <button class="btn btn-info btn-block py-3">Booking List</button>
+                                <button type="button"  onclick="getList('booklist')" class="btn btn-info btn-block py-3">Booking List</button>
                             </div>
                         </div>
                         <div class="col-md-6">
