@@ -116,7 +116,7 @@
                 <th>{{ $boarding->id }}</th>
                 <th>{{ $boarding->route->title ?? '' }}</th>
                 <td>{{ $boarding->terminal->title ?? '' }}</td>
-                <td>{{ date('h:i A', strtotime($boarding->created_at)) }}</td>
+                <td>{{ $boarding->schedule->depart_time ?? '' }}</td>
                 <td>{{ date('d-m-Y', strtotime($boarding->created_at)) }}</td>
                 <td>{{ $boarding->total_passenger }}</td>
                 <td>{{ $boarding->total_fare - $boarding->total_discount }}</td>

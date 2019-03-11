@@ -57,7 +57,7 @@
         </tr>
         @empty
         @endforelse
-        
+
         <tr>
             <td>Totla</td>
             <td>{{ $ticketStops->sum('total_seats') }}</td>
