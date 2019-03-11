@@ -48,8 +48,6 @@
             <td colspan="5">{{ $boarding->terminal->title }}</td>
         </tr>
         @forelse($ticketStops as $ticket)
-            <?php $arr = explode(', ',str_replace('M,', ', ', str_replace('F,', ', ', $ticket->seat_numbers)));
-            dd($arr); ?>
         <tr>
             <td></td>
             <td>{{ $ticket->total_seats }}</td>
@@ -59,13 +57,6 @@
         </tr>
         @empty
         @endforelse
-        {{--<tr>
-            <td></td>
-            <td>32</td>
-            <td>25,600</td>
-            <td>RWP/ISB</td>
-            <td>23, 34, 34, </td>
-        </tr>--}}
         <tr>
             <td>Totla</td>
             <td>{{ $ticketStops->sum('total_seats') }}</td>

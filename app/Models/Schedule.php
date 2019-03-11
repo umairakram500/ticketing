@@ -69,9 +69,9 @@ class Schedule extends Model
     public function ticketStops($date)
     {
         return $this->tickets()->whereDate('booking_for', $date)
-            ->selectRaw('tickets.to_stop,SUM(tickets.total_seats) as total_seats, SUM(tickets.total_fare) as total_fare, SUM(tickets.discount) as total_discount, STUFF((SELECT \',\' + md.seat_numbers FROM tickets md WHERE md.to_stop = tickets.to_stop
-          FOR XML PATH(\'\'), TYPE).value(\'.\', \'NVARCHAR(MAX)\'), 1, 1, \'\') as seat_numbers')
-            ->groupBy('tickets.to_stop');
+            ->selectRaw("tickets.to_stop,tickets.booking_for, SUM(tickets.total_seats) as total_seats, SUM(tickets.total_fare) as total_fare, SUM(tickets.discount) as total_discount, STUFF((SELECT ',' + md.seat_numbers FROM tickets md WHERE md.to_stop = tickets.to_stop and md.booking_for = tickets.booking_for
+          FOR XML PATH('')), 1, 1, '') as seat_numbers")
+            ->groupBy('tickets.to_stop', 'tickets.booking_for');
     }
 
     public function bookingSum($bookingdate)

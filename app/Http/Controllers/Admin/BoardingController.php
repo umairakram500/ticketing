@@ -155,7 +155,6 @@ class BoardingController extends Controller
      */
     public function edit(Boarding $boarding)
     {
-                // $data['']
         $data['boarding'] = $boarding;
         //dd($data['boarding']); exit;
         //Select all routes titles
@@ -166,29 +165,6 @@ class BoardingController extends Controller
         $data['terminals'] = Terminal::select('title');
         //Select all expense type where terminal deduct is true
         $data['exptype']= ExpenseType::all()->where('terminal_deduct',1);
-        //select total seats of the schedule
-        // $data['total_seats'] = Ticket::where('schedule_id', 3)->sum('total_seats');
-        // $data['total_fare'] = Ticket::where('schedule_id', 3)->sum('total_fare');
-        // $data['discount'] = Ticket::where('schedule_id', 3)->sum('discount');
-        //$data['schedule_tickets'] = Ticket::where('schedule_id', 3)->sum('total_seats','discount','total_fares');
-
-        //Select all schedules id
-        // $schedules = Schedule::select('id')->get()->toArray();
-        // $data['schedules'] = array_column($schedules, 'id');
-        // //print_r($schedules); exit;
-        // //Select all drivers names
-        // $drivers = Staff::where('staff_type_id',1)->select('name')->get()->toArray();
-        // $data['drivers'] = array_column($drivers, 'name');
-        // //Select all conductors names
-        // $conductors = Staff::where('staff_type_id',2)->select('name')->get()->toArray();
-        // $data['conductors'] = array_column($conductors, 'name');
-        // //Select all buses titles
-        // $buses = Bus::select('title')->get()->toArray();
-        // $data['buses'] = array_column($buses, 'title');
-        // //Select all tickets
-        // $data['tickets'] = Ticket::where('id', 6)->get();
-        //$tickets = array_column($tickets, 'title');
-        //$seats = array_column($seats, 'seat_numbers');
   
         $user_terminal_id = Auth::user()->terminal_id;
         $terminal = Terminal::find($user_terminal_id);

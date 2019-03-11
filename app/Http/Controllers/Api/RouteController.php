@@ -25,7 +25,7 @@ class RouteController extends Controller
     {
         $data['from'] = $route->from_terminal_id;
         $data['to'] = $route->to_terminal_id;
-        
+
         $data['fares'] = $route->fares()
             ->select(['from_terminal_id as from_stop', 'to_terminal_id as to_stop', 'fare', 'luxury_id'])
             ->get()->toArray();
