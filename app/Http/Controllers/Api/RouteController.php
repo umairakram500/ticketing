@@ -31,12 +31,15 @@ class RouteController extends Controller
         $fares = $route->fares()
             ->select(['from_terminal_id as from_stop', 'to_terminal_id as to_stop', 'fare','luxury_id'])
             ->get()->toArray();
-        $data['fares'] = array();
+        $nfares = array();
         if(count($fares)){
             foreach($fares as $fare){
                 $far = $fare;
                 unset($far['luxury_id']);
-                $data['fares'][$fare['luxury_id']][] = $far;
+                $nfares[$fare['luxury_id']][] = $far;
+            }
+            foreach($nfares as $id => $nfare){
+                $data['fares'][] = ['luxury_id'=>$id, 'fares'=>$nfare];
             }
         }
 

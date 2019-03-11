@@ -129,14 +129,14 @@
                                 <th>Discounts</th>
                                 <th>Refunds</th>
                                 <th>Expenses</th>
-                                <th>Total Sale</th>
+                                <th>Net Sale</th>
                             </tr>
                             <tr>
                                 <td>{{ $total_fare }} {{ Form::hidden('total_fare', $total_fare) }}</td>
                                 <td>{{ $total_discount }} {{ Form::hidden('total_discount', $total_discount) }}</td>
                                 <td>-</td>
                                 <td>{{ array_sum($ter_exps) }}</td>
-                                <td>{{ $total_fare - $total_discount }}</td>
+                                <td>{{ $total_fare - $total_discount - array_sum($ter_exps) }}</td>
                             </tr>
                         </table>
                     </div>
