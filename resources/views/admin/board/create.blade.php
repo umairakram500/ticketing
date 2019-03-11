@@ -74,6 +74,8 @@
 
             </div>
 
+
+
             <div class="row gutter">
                 <div class="col-sm-6" ng-app="">
                     <label for=""><strong>Terminal Expenses *</strong></label>
@@ -82,8 +84,9 @@
                             ['terminal_deduct', 1],
                             ['status', 1]
                     ])->get();
-                    $ter_exps = \App\Models\ExpensetypeTerminal::where('terminal_id', Auth::user()->terminal_id)->get()->pluck('amount', 'expensetype_id');
+                    $ter_exps = \App\Models\ExpensetypeTerminal::where('terminal_id', Auth::user()->terminal_id)->get()->pluck('amount', 'expensetype_id')->toArray();
                     ?>
+
                     <table class="table table-bordered">
                         @forelse($expenses as $expense)
                             <tr>
@@ -132,7 +135,7 @@
                                 <td>{{ $total_fare }} {{ Form::hidden('total_fare', $total_fare) }}</td>
                                 <td>{{ $total_discount }} {{ Form::hidden('total_discount', $total_discount) }}</td>
                                 <td>-</td>
-                                <td>{{ $expenses->sum('amount') }}</td>
+                                <td>{{ array_sum($ter_exps) }}</td>
                                 <td>{{ $total_fare - $total_discount }}</td>
                             </tr>
                         </table>

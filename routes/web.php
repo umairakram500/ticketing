@@ -199,6 +199,7 @@ Route::name('admin.')->prefix('admin')->namespace('Admin')->group(function () {
         // Cashier
         Route::get('cashier/closing/voucher/create', 'CashierController@create')->name('cashier.close.voucher');
         Route::get('cashier/closing/voucher/print', 'CashierController@show')->name('cashier.close.print');
+
     });
 
 
