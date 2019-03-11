@@ -25,19 +25,14 @@ class RouteController extends Controller
     {
         $data['from'] = $route->from_terminal_id;
         $data['to'] = $route->to_terminal_id;
-        /*$data['stops'] = Stop::select('terminal_id')->with('terminal')
-                    ->where('route_id', $route->id)->get()->pluck('terminal.title', 'terminal_id')->toArray();*/
-        $stops = $route->stops()->with('terminal')->get()->pluck('terminal.title', 'id');
+        
+        $data['stops'] = $route->stops()->with('terminal')->get()->pluck('terminal.title', 'id');
         $data['fares'] = $route->fares()
             ->select(['from_terminal_id as from_stop', 'to_terminal_id as to_stop', 'fare', 'luxury_id'])
             ->get()->toArray();
 
         $data['schedules'] = $route->schedules()->select(['id', 'depart_time as title', 'luxury_type as luxury_id'])->get()->toArray();
 
-//        foreach($stops as $stop)
-//            $data['stops'][] = array('id'=>$stop->id, 'title'=>$stop->terminal->title);
-
-        // dd($data);
 
         return response($data);
     }
