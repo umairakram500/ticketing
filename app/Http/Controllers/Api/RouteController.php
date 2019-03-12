@@ -49,10 +49,10 @@ class RouteController extends Controller
     public function getStops(Route $route)
     {
         $stops = $route->stops()->with('terminal:id,title')->get()->toArray();
-        $data['stops'] = [];
+        $data = [];
         if(count($stops)>0){
             foreach($stops as $stop){
-                $data['stops'][] = $stop['terminal'];
+                $data[] = $stop['terminal'];
             }
         }
         return response($data);

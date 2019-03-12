@@ -63,11 +63,11 @@ class BoardingController extends Controller
         if(isset($req->schedule))
         {
             $schedule = Schedule::find($req->schedule);
-            $data['booked_seats'] = $schedule->tickets()->SeattypeSum($boodingdate, 1);
-            $data['extra_seats'] = $schedule->tickets()->SeattypeSum($boodingdate, 0);
+            $data['booked_seats'] = $schedule->tickets()->where('from_stop', Auth::user()->terminal_id)->SeattypeSum($boodingdate, 1);
+            $data['extra_seats'] = $schedule->tickets()->where('from_stop', Auth::user()->terminal_id)->SeattypeSum($boodingdate, 0);
             $data['total_seats'] = $data['booked_seats'] + $data['extra_seats'];
 
-            $tickets = $schedule->tickets()->where('paid', 1)->whereDate('booking_for',$boodingdate)->get();
+            $tickets = $schedule->tickets()->where('from_stop', Auth::user()->terminal_id)->where('paid', 1)->whereDate('booking_for',$boodingdate)->get();
 
             $data['total_fare'] = $tickets->sum('total_fare');
             $data['total_discount'] = $tickets->sum('discount');
