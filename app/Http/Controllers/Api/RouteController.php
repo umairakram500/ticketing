@@ -43,7 +43,7 @@ class RouteController extends Controller
 
     public function getSchedules(Route $route)
     {
-        return response($route->schedules()->select(['id', 'depart_time as title'])->get());
+        return response($route->schedules()->select(['id', 'depart_time as title', 'luxury_type as luxury_id'])->get());
     }
 
     public function getStops(Route $route)
@@ -58,11 +58,16 @@ class RouteController extends Controller
         return response($data);
     }
 
-    public function getFare()
+    public function getFare(Route $route, Request $req)
     {
-        Fare::where([
-            ['route_id']
-        ])->get();
+        $fare = Fare::select('fare')->where([
+            ['route_id', $route->id],
+            ['luxury_id', $req->luxury_id],
+            ['from_terminal_id', $req->from_stop],
+            ['to_terminal_id', $req->to_stop]
+        ])->get('fare')->first();
+        
+        return response($fare != null ? $fare->fare : 0 );
     }
 
 

@@ -32,6 +32,7 @@ Route::namespace('Api')->name('api.')->group(function () {
     // get schedules
     Route::get('routes/{route}/getSchedules', 'RouteController@getSchedules');
     Route::get('routes/{route}/getStops', 'RouteController@getStops');
+    Route::get('routes/{route}/getFare', 'RouteController@getFare');
 
     Route::post('ticket/store', 'TicketController@store');
 
