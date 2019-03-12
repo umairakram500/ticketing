@@ -77,7 +77,8 @@ class ExpenseTypeController extends Controller
      */
     public function edit(ExpenseType $expenseType)
     {
-        $expenseType->nightfrom = $expenseType->nightfrom ? date('h:i a', strtotime($expenseType->nightfrom)) : '';
+        //dd($expenseType);
+        $expenseType->nightfrom = $expenseType->nightfrom ? date('h:i a', strtotime($expenseType->nightfrom)):'';
         $expenseType->nightto = $expenseType->nightto ? date('h:i a', strtotime($expenseType->nightto)) : '';
         //$expenseType = ExpenseType::find($id);
         return view("admin.expense_type.edit", ['expense_type' => $expenseType]);

@@ -89,8 +89,6 @@
                 <td colspan="4">{{ $voucher->driver->name ?? '' }}</td>
                 <th>Conductor</th>
                 <td colspan="6">{{ $voucher->conductor->name ?? '' }}</td>
-                {{--<td>Avg KM</td>
-                <td>0.00</td>--}}
             </tr>
         </table>
         <h3 class="title">Depart Vouchers</h3>

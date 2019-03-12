@@ -46,11 +46,9 @@
 </div>
 
 <?php
-
 $oldexps = old('expenses');
-if($oldexps != null){
+if($oldexps != null)
     $expenses = $oldexps;
-}
 ?>
 
     <div class="row gutter">

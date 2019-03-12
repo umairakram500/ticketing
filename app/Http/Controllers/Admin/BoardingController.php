@@ -248,7 +248,7 @@ class BoardingController extends Controller
 
     public function getInfo(Request $req, $id)
     {
-        $boarding = Boarding::where('id',$id)->whereIsNull('voucher_id')->with(['route:id,title', 'terminal:id,title'])->get()->first();
+        $boarding = Boarding::where('id',$id)->whereNull('voucher_id')->with(['route:id,title', 'terminal:id,title'])->get()->first();
         //dd($boarding->toArray());
 
         if($boarding !== null){
