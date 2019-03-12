@@ -66,7 +66,17 @@ class RouteController extends Controller
             ['from_terminal_id', $req->from_stop],
             ['to_terminal_id', $req->to_stop]
         ])->get('fare')->first();
-        
+
+        return response($fare != null ? $fare->fare : 0 );
+    }
+    public function getFares(Route $route, Request $req)
+    {
+        $fare = Fare::select(['from_terminal_id as from_stop','to_terminal_id as to_stop','luxury_id','fare'])
+                    ->where([
+                        ['route_id', $route->id],
+                        ['luxury_id', $req->luxury_id]
+                    ])->get('fare')->first();
+
         return response($fare != null ? $fare->fare : 0 );
     }
 
