@@ -212,7 +212,7 @@
             for (var id in stopIds) {
                 appendStop(stopIds[id]);
             }
-            $('#stops .row:last-child input').attr('readonly', true);
+            // $('#stops .row:last-child input').attr('readonly', true);
             $('.depart, .arrive').timepicker({ 'step': 15, 'timeFormat': 'g:i a' });
         }
     }
