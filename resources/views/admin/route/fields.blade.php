@@ -67,14 +67,20 @@
         </div><!--form-group-->
     </div>
     <div class="col-md-6 col-sm-12">
-        <div class="row">
-            <div class="col-xs-6">
+        <div class="row gutter">
+            <div class="col-xs-4">
                 <div class="form-group">
-                    {{ Form::label('kms', 'KM\'s *') }}
+                    {{ Form::label('kms', 'Manual KM\'s *') }}
                     {{ Form::number('kms', null, ['class' => 'form-control'])}}
                 </div><!--form-group-->
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-4">
+                <div class="form-group">
+                    {{ Form::label('act_kms', 'KM\'s From G-Boos') }}
+                    {{ Form::number('act_kms', null, ['class' => 'form-control'])}}
+                </div><!--form-group-->
+            </div>
+            <div class="col-xs-4">
                 <div class="form-group">
                     {{ Form::label('diesel', 'Diesel *') }}
                     {{ Form::number('diesel', null, ['class' => 'form-control'])}}
