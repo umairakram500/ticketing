@@ -55,12 +55,12 @@
             {{ Form::select('city_id', $cities, null, ['class' => 'form-control'])}}
         </div><!--form-group-->
     </div>
-    <div class="col-md-4 col-sm-12 pt-2">
+    {{--<div class="col-md-4 col-sm-12 pt-2">
         <div class="form-group mt-5">
             {{ Form::checkbox('reverse', 1, null, ['id' => 'reverse'])}}
             {{ Form::label('reverse', 'Reverse Order *') }}
         </div><!--form-group-->
-    </div>
+    </div>--}}
 </div>
 
 <div id="stops" class="my-5">
