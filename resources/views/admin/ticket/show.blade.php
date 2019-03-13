@@ -78,15 +78,15 @@
 
             <tr>
                 <th>Fare</th>
-                <td align="right">{{$ticket->total_fare}}</td>
+                <td align="right">{{$ticket->total_fare/$ticket->total_seats}}</td>
             </tr>
             <tr>
                 <th>Discount</th>
-                <td align="right">{{$ticket->discount}}</td>
+                <td align="right">{{$ticket->discount/$ticket->total_seats}}</td>
             </tr>
             <tr>
                 <th>Net Fare</th>
-                <td align="right">{{$ticket->total_fare-$ticket->discount}}</td>
+                <td align="right">{{($ticket->total_fare/$ticket->total_seats)-($ticket->discount/$ticket->total_seats)}}</td>
             </tr>
         </table>
 
