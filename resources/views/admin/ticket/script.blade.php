@@ -236,7 +236,7 @@ console.log('asdf');
                     console.log(fares);
                     var stops = '';
                     $.each(res.stops, function(i,v){
-                        stops += '<option value="'+i+'">'+v+'</option>'
+                        stops += '<option value="'+ v.id+'">'+ v.title+'</option>'
                     });
                     $('#from_stop, #to_stop').html(stops);
                     $('#from_stop option[value="'+res.from+'"]').prop('selected', true);

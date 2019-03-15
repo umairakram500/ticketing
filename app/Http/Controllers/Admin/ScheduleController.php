@@ -43,18 +43,21 @@ class ScheduleController extends Controller
 
     public function getStops($route)
     {
-        $stops = Stop::select('terminal_id')->with('terminal')->where('route_id', $route)->get()->toArray();
+        $stops = Stop::select('terminal_id')->with('terminal:id,title')->where('route_id', $route)->get()->toArray();
 
-        $nStops = array();
+        /*$nStops = array();
         if($stops !== null){
             foreach($stops as $stop){
                 $nStops[$stop['terminal_id']] = $stop['terminal']['title'];
             }
-        }
-        $data['stops'] = $nStops;
+        }*/
+        $data = array();
+        if($stops !== null){
+            $data = array_column($stops, 'terminal');
+        };
         //$data['stopids'] = count($nStops) ? array_keys($nStops) : [];
         //dd($data);
-        return response($nStops);
+        return response($data);
         //dd(Stop::where('route_id', $route)->with('terminal')->get());
     }
 

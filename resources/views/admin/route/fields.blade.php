@@ -1,4 +1,6 @@
-
+<?php
+$terminals = \App\Models\Terminal::selection();
+?>
 <div class="row gutter">
     <div class="col-sm-12">
         <div class="form-group">
@@ -51,13 +53,32 @@
                 //dd($stops);
             ?>
             {{ Form::label('stops', 'Stops') }}
-            {{--{{ Form::select('stops[]', $terminals, $stops, ['class' => 'form-control', 'id' => 'stops', 'multiple' => true])}}--}}
-                <select name="stops[]" id="stops" multiple class="form-control">
-                    @forelse($terminals as $tk => $terminal)
-                        <option value="{{ $tk }}" {{ in_array($tk, $stops) ? 'selected' : '' }}>{{ $terminal }}</option>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th width="10"><strong>#</strong></th>
+                        <th colspan="2"><strong>Stop(s)</strong></th>
+                    </tr>
+                </thead>
+                <tbody id="stopslist">
+                    @forelse($stops as $key => $stop)
+                    <tr>
+                        <td><strong>{{ $key+1 }}</strong></td>
+                        <td>{{ Form::select('stops[]', $terminals, $stop, ['class' => 'form-control']) }}</td>
+                        <td><span class="btn btn-primary re_row"><span class="fa fa-times"></span></span></td>
+                    </tr>
                     @empty
                     @endforelse
-                </select>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <button type="button" class="btn btn-primary" id="addstop"><span class="fa fa-plus mr-2"></span> Add Stop</button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
         </div><!--form-group-->
     </div>
     <div class="col-md-6 col-sm-12">
@@ -111,41 +132,17 @@
 @push('after-js')
 <script>
     $(document).ready(function(){
-        $('#stops').multiSelect({
-            keepOrder: true,
-            selectableHeader: "<input type='text' class='search-input form-control' autocomplete='off' placeholder='Search...'>",
-            selectionHeader: "<input type='text' class='search-input form-control' autocomplete='off' placeholder='Search...'>",
-            afterInit: function(ms){
-                var that = this,
-                        $selectableSearch = that.$selectableUl.prev(),
-                        $selectionSearch = that.$selectionUl.prev(),
-                        selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
-                        selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+        $(document).on('click', '.re_row', function(){
+            $(this).parents(':eq(1)').remove();
+        });
+        $('#addstop').click(function(){
+            //var rowid = Math.floor(Math.random() * (99999 - 1 + 1)) + 1;
+                    <?php
+                    $select_stops = Form::select('stops[]', $terminals, null, ['class'=>'form-control', 'placeholder'=>'- Select Stop -', 'required'])
+                    ?>
+                    var exp_row = '<tr><td></td><td>{{ $select_stops }}</td><td><span class="btn btn-primary re_row"><span class="fa fa-times"></span></span></td></tr>';
 
-                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-                        .on('keydown', function(e){
-                            if (e.which === 40){
-                                that.$selectableUl.focus();
-                                return false;
-                            }
-                        });
-
-                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-                        .on('keydown', function(e){
-                            if (e.which == 40){
-                                that.$selectionUl.focus();
-                                return false;
-                            }
-                        });
-            },
-            afterSelect: function(){
-                this.qs1.cache();
-                this.qs2.cache();
-            },
-            afterDeselect: function(){
-                this.qs1.cache();
-                this.qs2.cache();
-            }
+            $('#stopslist').append(exp_row);
         });
     })
 </script>

@@ -43,18 +43,19 @@
 
 <div class="row gutter">
     <div class="col-md-4 col-sm-12">
+        <?php $cities = \App\Models\City::Selection('name'); ?>
+        <div class="form-group">
+            {{ Form::label('city_id', 'Base Station *') }}
+            {{ Form::select('city_id', $cities, null, ['class' => 'form-control'])}}
+        </div><!--form-group-->
+    </div>
+    <div class="col-md-8 col-sm-12">
         <div class="form-group">
             {{ Form::label('note', 'Note') }}
             {{ Form::text('note', null, ['class' => 'form-control'])}}
         </div><!--form-group-->
     </div>
-    <div class="col-md-4 col-sm-12">
-        <?php $cities = \App\Models\City::Selection('name'); ?>
-        <div class="form-group">
-            {{ Form::label('city_id', 'City *') }}
-            {{ Form::select('city_id', $cities, null, ['class' => 'form-control'])}}
-        </div><!--form-group-->
-    </div>
+
     {{--<div class="col-md-4 col-sm-12 pt-2">
         <div class="form-group mt-5">
             {{ Form::checkbox('reverse', 1, null, ['id' => 'reverse'])}}
@@ -208,17 +209,17 @@
     function addStops()
     {
         if(Object.keys(stops).length > 0){
-            var stopIds = reverse ? Object.keys(stops).reverse() : Object.keys(stops);
-            for (var id in stopIds) {
-                appendStop(stopIds[id]);
+            //var stopIds = reverse ? Object.keys(stops).reverse() : Object.keys(stops);
+            for (var id in stops) {
+                appendStop(stops[id].id, stops[id].title);
             }
             // $('#stops .row:last-child input').attr('readonly', true);
             $('.depart, .arrive').timepicker({ 'step': 15, 'timeFormat': 'g:i a' });
         }
     }
-    function appendStop(id)
+    function appendStop(id, title)
     {
-        var stop = '<div class="row gutter"><div class="col-md-4 col-sm-12"><div class="form-group"><h4 class="mt-5 text-muted">'+stops[id]+'</h4> <input type="hidden" name="stops['+id+'][name]" value="'+stops[id]+'"></div></div><div class="col-md-4 col-sm-12"><div class="form-group"> <label>Departure</label> <input type="text" class="form-control depart" name="stops['+id+'][depart]" required></div></div><div class="col-md-4 col-sm-12"><div class="form-group"> <label>Arrival</label> <input type="text" class="form-control arrive" name="stops['+id+'][arrive]" required></div></div></div>';
+        var stop = '<div class="row gutter"><div class="col-md-4 col-sm-12"><div class="form-group"><h4 class="mt-5 text-muted">'+title+'</h4> <input type="hidden" name="stops['+id+'][name]" value="'+title+'"></div></div><div class="col-md-4 col-sm-12"><div class="form-group"> <label>Departure</label> <input type="text" class="form-control depart" name="stops['+id+'][depart]" required></div></div><div class="col-md-4 col-sm-12"><div class="form-group"> <label>Arrival</label> <input type="text" class="form-control arrive" name="stops['+id+'][arrive]" required></div></div></div>';
 
         $('#stops').append(stop);
     }

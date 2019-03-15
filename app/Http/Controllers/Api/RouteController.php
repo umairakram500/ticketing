@@ -55,6 +55,7 @@ class RouteController extends Controller
                 $data[] = $stop['terminal'];
             }
         }
+
         return response($data);
     }
 

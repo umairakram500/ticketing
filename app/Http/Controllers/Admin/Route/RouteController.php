@@ -120,7 +120,6 @@ class RouteController extends Controller
      */
     public function update(RouteRequest $request, Route $route)
     {
-
         $route->title = $request->title;
         $route->from_city_id = $request->from_city_id;
         $route->to_city_id = $request->to_city_id;
@@ -133,7 +132,7 @@ class RouteController extends Controller
         //$route->travel_time = $request->hrs.":".$request->mins;
         //$route->stations = json_encode($request->stations) ;
         //$route->kms = $request->kms;
-        $this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
+        //$this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
         if($route->save()){
             $this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
             //$this->saveFares($request->fares, $route);
@@ -191,19 +190,14 @@ class RouteController extends Controller
 
     private function saveStops($stops, $route, $from, $to)
     {
-        if(current($stops) !== $from){
-            array_unshift($stops, $from);
-        }
-        if(end($stops) !== $to){
-            $stops[] =  $to;
-        }
-
-        //dd($stops);
-        Stop::where('route_id', $route->id)->delete();
+        $stops = array_diff($stops, [$from, $to]);
+        array_unshift($stops, $from);
+        array_push($stops, $to);
+        Stop::where('route_id', $route->id)->whereNotIn('terminal_id', $stops)->delete();
         if(is_array($stops) && count($stops))
         {
-            foreach($stops as $stop){
-                Stop::updateOrCreate(['route_id' => $route->id, 'terminal_id' => $stop]);
+            foreach($stops as $k => $stop){
+                Stop::updateOrCreate(['route_id' => $route->id, 'terminal_id' => $stop], ['sort_order'=>($k+1)]);
             }
         }
 
@@ -226,16 +220,14 @@ class RouteController extends Controller
     public function getStops(Route $route)
     {
 
-        $stops = Stop::select('terminal_id')->with('terminal')->where('route_id', $route->id)->get()->toArray();
+        $stops = Stop::select('terminal_id')->with('terminal:id,title')->where('route_id', $route->id)->get()->toArray();
         $fares = $route->fares->toArray();
         $data['stops'] = array();
         $data['fares'] = array();
         $data['from'] = $route->from_terminal_id;
         $data['to'] = $route->to_terminal_id;
         if($stops !== null){
-            foreach($stops as $stop){
-                $data['stops'][$stop['terminal_id']] = $stop['terminal']['title'];
-            }
+            $data['stops'] = array_column($stops, 'terminal');
         }
 
         if(count($fares)){

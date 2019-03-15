@@ -19,6 +19,7 @@ class CreateRouteStopsTable extends Migration
 
             $table->integer('route_id')->unsigned();
             $table->integer('terminal_id')->unsigned();
+            $table->integer('sort_order')->unsigned();
 
             $table->integer('company_id')->unsigned();
             $table->foreign('route_id')->references('id')->on('routes')->onDelete('cascade');

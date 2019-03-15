@@ -240,7 +240,7 @@ if($routeID > 0){
                 <div class="col-md-2">
                     <div class="form-group input-group">
                         <span class="input-group-addon">Qty</span>
-                        <input type="number" class="form-control" id="total_seats" name="total_seats" value="{{ old('total_seats') }}" placeholder="e.g. 5" required>
+                        <input type="number" class="form-control" id="total_seats" name="total_seats" value="{{ old('total_seats') }}" placeholder="e.g. 5" readonly required>
                     </div>
                 </div>
 

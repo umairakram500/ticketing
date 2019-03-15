@@ -14,7 +14,7 @@ class Stop extends Model
     protected $table = 'route_stops';
 
     protected $fillable = [
-        'terminal_id', 'route_id', 'company_id'
+        'terminal_id', 'route_id', 'company_id', 'sort_order'
     ];
 
     /*
@@ -32,7 +32,7 @@ class Stop extends Model
 
     public function newQuery()
     {
-        return parent::newQuery()->where('company_id', 1);
+        return parent::newQuery()->where('company_id', 1)->orderBy('sort_order');
     }
 
     /*----------------  RELATIONS  ----------------*/

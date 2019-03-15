@@ -27,62 +27,65 @@
         </li>
 
         <!-- Routes -->
-        {{--@if(Auth::user()->permission('routes'))--}}
+        @if(Auth::user()->permission('routes'))
         <li class="{{request()->is('admin/route*')?'selected':''}}">
             <a href="{{ route('admin.route.index') }}">
                 <i class="fa fa-road"></i>
                 <span class="menu-item">Routes</span>
             </a>
         </li>
-        {{--@endif--}}
+        @endif
 
         <!-- schedules -->
-        {{--@if(Auth::user()->permission('schedules'))--}}
+        @if(Auth::user()->permission('schedules'))
         <li class="{{request()->is('admin/schedules*')?'selected active':''}}">
             <a href="{{ route('admin.schedules.index') }}">
                 <i class="icon-calendar7"></i>
                 <span class="menu-item">Schedules</span>
             </a>
         </li>
-        {{--@endif--}}
+        @endif
 
         <!-- Fares -->
-        {{--@if(Auth::user()->permission('fares'))--}}
+        @if(Auth::user()->permission('fares'))
         <li class="{{request()->is('admin/fares*')?'selected active':''}}">
             <a href="{{ route('admin.fares.index') }}">
                 <i class="fa fa-money"></i>
                 <span class="menu-item">Fares</span>
             </a>
         </li>
-        {{--@endif--}}
+        @endif
 
 
 
-        {{--@if(Auth::user()->permission('schedules'))--}}
-        {{--<li class="{{request()->is('admin/departure*')?'selected active':''}}">
+        {{--@if(Auth::user()->permission('schedules'))
+        <li class="{{request()->is('admin/departure*')?'selected active':''}}">
             <a href="{{ route('admin.departure.create') }}">
                 <i class="fa fa-file-text"></i>
                 <span class="menu-item">Departure</span>
             </a>
-        </li>--}}
-        {{--@endif--}}
+        </li>
+        @endif--}}
 
-        {{--@if(Auth::user()->permission('schedules'))--}}
+        @if(Auth::user()->permission('route-expense'))
         <li class="{{request()->is('admin/voucher')?'selected active':''}}">
             <a href="{{ route('admin.voucher.create') }}">
                 <i class="fa fa-files-o"></i>
                 <span class="menu-item">Route Expense</span>
             </a>
         </li>
-        {{--@endif--}}
+        @endif
 
+        @if(Auth::user()->permission('closing-voucher'))
         <li class="{{request()->is('admin/cashier/closing/voucher*')?'selected active':''}}">
             <a href="{{ route('admin.cashier.close.voucher') }}">
                 <i class="fa fa-money"></i>
                 <span class="menu-item">Closing Voucher</span>
             </a>
         </li>
+        @endif
 
+        @if(Auth::user()->permission('ticketing'))
         <li class="{{request()->is('admin/ticket*')?'selected active':''}}">
             <a href="{{ route('admin.ticket.index') }}">
                 <i class="fa fa-ticket"></i>
@@ -102,9 +105,10 @@
                 </li>
             </ul>
         </li>
+        @endif
 
         <!-- users -->
-        {{--@if(Auth::user()->permission('users'))--}}
+        @if(Auth::user()->permission('users'))
             <li class="{{request()->is('admin/users*')||request()->is('admin/roles*')||request()->is('admin/designation*')||request()->is('admin/department*')?'selected active':''}}">
                 <a href="{{ route('admin.users.index') }}">
                     <i class="fa fa-users"></i>
@@ -138,32 +142,30 @@
                     </li>
                 </ul>
             </li>
-            {{--@endif--}}
+            @endif
 
         <!-- Cities -->
-        {{--@if(Auth::user()->permission('cities'))--}}
+        @if(Auth::user()->permission('cities'))
         <li class="{{request()->is('admin/city*')?'selected':''}}">
             <a href="{{ route('admin.city.index') }}">
                 <i class="fa fa-building"></i>
                 <span class="menu-item">Cities</span>
             </a>
         </li>
-        {{--@endif--}}
+        @endif
 
         <!-- Terminals -->
-        {{--@if(Auth::user()->permission('terminals'))--}}
+        @if(Auth::user()->permission('terminals'))
         <li class="{{request()->is('admin/terminal*')?'selected':''}}">
             <a href="{{ route('admin.terminal.index') }}">
                 <i class="fa fa-hand-o-right"></i>
                 <span class="menu-item">Terminals / Stops</span>
             </a>
         </li>
-        {{--@endif--}}
-
-
+        @endif
 
         <!-- staff -->
-        {{--@if(Auth::user()->permission('Staff'))--}}
+        @if(Auth::user()->permission('Staff'))
         <li class="{{request()->is('admin/staff*')?'selected active':''}}">
             <a href="{{ route('admin.staff.index') }}">
                 <i class="fa fa-users"></i>
@@ -193,10 +195,10 @@
                 </li>
             </ul>
         </li>
-        {{--@endif--}}
+        @endif
 
         <!-- buses -->
-        {{--@if(Auth::user()->permission('buses'))--}}
+        @if(Auth::user()->permission('buses'))
         <li class="{{request()->is('admin/bus*')?'selected active':''}}">
             <a href="{{ route('admin.bus.index') }}">
                 <i class="fa fa-bus"></i>
@@ -226,22 +228,21 @@
                 </li>
             </ul>
         </li>
-        {{--@endif--}}
+        @endif
 
         <!-- expense -->
-        {{--@if(Auth::user()->permission('expense'))--}}
+        @if(Auth::user()->permission('expense'))
         <li class="{{request()->is('admin/expense_type*')?'selected':''}}">
             <a href="{{ route('admin.expense_type.index') }}">
                 <i class="fa fa-money"></i>
                 <span class="menu-item">Expense Types</span>
             </a>
         </li>
-
-        {{--@endif--}}
+        @endif
 
                 <!-- cargo -->
 
-        {{--@if(Auth::user()->permission('cargo'))--}}
+        @if(Auth::user()->permission('cargo'))
             <li class="{{request()->is('admin/cargo*')?'selected active':''}}">
                 <a href="{{ route('admin.cargo.index') }}">
                     <i class="icon-aircraft"></i>
@@ -283,7 +284,7 @@
 
                 </ul>
             </li>
-        {{--@endif--}}
+        @endif
     </ul>
     <!-- Sidebar menu snd -->
 </div>
