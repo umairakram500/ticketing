@@ -75,18 +75,19 @@ console.log('asdf');
                 $('.cu.alert.error').show();
             }
             else {
-                $('.alert.loading').show();
-                $('input[name="p_phone"]').focus();
+                //$('.alert.loading').show();
+                //$('input[name="seat_numbers"]').focus();
                 $.get('{{ url('admin/getCustomerInfo')}}/'+cnic, function(res){
-                    console.log(res);
-                    $('.cu.alert').hide();
+                    //console.log(res);
+                    //$('.cu.alert').hide();
                     if(res.error != undefined){
-                        $('.alert.new').show();
-                        $('input[name="p_phone"], input[name="p_name"]').val('');
+                        //$('.alert.new').show();
+                        $('input[name="p_name"]').focus();
+                        $('input[name="p_phone"], input[name="p_name"]').val('').prop('readonly', false);
                     } else{
-                        $('.cu.alert.existing').show();
-                        $('input[name="p_phone"]').val(res.phone);
-                        $('input[name="p_name"]').val(res.name);
+                        //$('.cu.alert.existing').show();
+                        $('input[name="p_phone"]').val(res.phone).prop('readonly', true);
+                        $('input[name="p_name"]').val(res.name).prop('readonly', true).focus();
                     }
                 })
             }
@@ -120,7 +121,7 @@ console.log('asdf');
         });
         // Bus seats
         $(document).on('click', '[data-schedule]',function(){
-            $('#total_seats').removeAttr('readonly');
+            //$('#total_seats').removeAttr('readonly');
             $(this).siblings().removeClass('active');
             $(this).addClass('active');
             var type = $(this).data('type');
@@ -238,8 +239,11 @@ console.log('asdf');
                     $.each(res.stops, function(i,v){
                         stops += '<option value="'+ v.id+'">'+ v.title+'</option>'
                     });
-                    $('#from_stop, #to_stop').html(stops);
-                    $('#from_stop option[value="'+res.from+'"]').prop('selected', true);
+                    $('#to_stop').html(stops);
+                    $('#from_stop').html('<option value="{{ Auth::user()->terminal_id }}">{{ Auth::user()->terminal->title ?? 'Terminal not found' }}</option>');
+                    /*$('#from_stop option[value="{{ Auth::user()->terminal_id }}"]')
+                            .prop('selected', true)
+                            .prop('readonly', true);*/
                     $('#to_stop option[value="'+res.to+'"]').prop('selected', true);
                 }
             });

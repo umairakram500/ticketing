@@ -54,7 +54,9 @@ if($routeID > 0){
         </div>
         <div class="col-md-2">
             <div class="form-group">
-                <?php $route = \App\Models\Route\Route::selection(); ?>
+                <?php $route = \App\Models\Route\Route::whereHas('stops', function($query){
+                    return $query->where('terminal_id', Auth::user()->terminal_id);
+                })->selection(); ?>
                 {{ Form::label('route', 'Route') }}
                 {{ Form::select('route', $route, $routeID, ['class' => 'form-control', 'placeholder'=>'- Select Route -', 'required'])}}
             </div><!--form-group-->

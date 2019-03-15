@@ -45,20 +45,12 @@ class ScheduleController extends Controller
     {
         $stops = Stop::select('terminal_id')->with('terminal:id,title')->where('route_id', $route)->get()->toArray();
 
-        /*$nStops = array();
-        if($stops !== null){
-            foreach($stops as $stop){
-                $nStops[$stop['terminal_id']] = $stop['terminal']['title'];
-            }
-        }*/
         $data = array();
         if($stops !== null){
             $data = array_column($stops, 'terminal');
         };
-        //$data['stopids'] = count($nStops) ? array_keys($nStops) : [];
-        //dd($data);
+
         return response($data);
-        //dd(Stop::where('route_id', $route)->with('terminal')->get());
     }
 
     /**
@@ -287,10 +279,7 @@ class ScheduleController extends Controller
         //$noBuses = Bus::noSchedule('schedules')->OnUserTerminal()->get();
         $noBuses = Bus::whereDoesntHave('schedules', function($query){
                         $query->where('arrived', 0);
-                    })->where( [
-                        //['terminal_id', Auth::user()->terminal_id],
-                        ['status', 1]
-                    ])->get();
+                    })->where('status', 1)->get();
 
         //dd($noBuses[0]);
         return view('admin.schedule.buses', ['buses' => $noBuses]);
