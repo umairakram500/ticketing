@@ -155,27 +155,6 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            {{--<div class="col-md-6">
-                                <div class="p-3 bg-primary">Summary</div>
-                                <table class="table table-bordered table-hover table-striped">
-                                    <tr>
-                                        <td>Total Income</td>
-                                        <td>89590</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total Route Expenses</td>
-                                        <td>2540</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total Terminal Expenses</td>
-                                        <td>3550</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Net Porfit</strong></td>
-                                        <td><strong>830500</strong></td>
-                                    </tr>
-                                </table>
-                            </div>--}}
                         </div>
 
                         <div class="row gutter">
