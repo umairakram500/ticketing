@@ -276,17 +276,22 @@ class TicketController extends Controller
             ['route_id', $req->route],
             ['terminal_id', $req->from_stop]
         ])->get()->first()->sort_order;
-        /*$to_sort = Stop::where([
+        $to_sort = Stop::where([
             ['route_id', $req->route],
             ['terminal_id', $req->to_stop]
-        ])->get()->first()->sort_order;*/
+        ])->get()->first()->sort_order;
 
         //dd($from_sort);
 
-        $seats = TicketSeat::where('to_sort', '>', $from_sort)->whereHas('ticket', function ($query) use ($schedule, $date) {
-            return $query->where('schedule_id', $schedule)
-                         ->whereDate('booking_for', $date);
-        })->get()->toArray();
+        $seats = TicketSeat::where([
+                    ['to_sort', '>', $from_sort],
+                    ['from_sort', '<=', $from_sort],
+                ])
+            //->orWhere('from_sort', '>', $from_sort)
+            ->whereHas('ticket', function ($query) use ($schedule, $date) {
+                return $query->where('schedule_id', $schedule)
+                             ->whereDate('booking_for', $date);
+            })->get()->toArray();
 
         //dd($seats);
 
