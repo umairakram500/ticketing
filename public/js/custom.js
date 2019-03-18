@@ -439,10 +439,12 @@ function getBusSeats(ele, url)
 	var schedule = $(ele).data('schedule');
 	var route = $(ele).data('route');
 	var bookingdate = $('#bookingdate').val();
+	var from_stop = $('#from_stop').val();
+	var to_stop = $('#to_stop').val();
 	$('input[name="route_id"]').val(route);
 	$('input[name="schedule_id"]').val(schedule);
 
-	var data = { schedule: schedule, route: route, bookingdate: bookingdate };
+	var data = { schedule: schedule, route: route, bookingdate: bookingdate, from_stop:from_stop, to_stop:to_stop };
 
 	$.ajax({
 		url: url,

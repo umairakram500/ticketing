@@ -47,6 +47,8 @@ class CreateTicketsTable extends Migration
             $table->boolean('status')->default(1);
             $table->boolean('departure')->default(0);
             $table->boolean('paid')->default(0);
+            $table->integer('from_sort')->nullable();
+            $table->integer('to_sort')->nullable();
             // forgien keies
             $table->foreign('from_city_id')->references('id')->on('cities');
             $table->foreign('to_city_id')->references('id')->on('cities');

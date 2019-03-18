@@ -16,7 +16,7 @@ class TicketSeat extends Model
      * @var array
      */
     protected $fillable = [
-        'gender', 'seat', 'schedule_id',
+        'gender', 'seat', 'schedule_id', 'from_sort', 'to_sort'
     ];
 
     public function ticket(){

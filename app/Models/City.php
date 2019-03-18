@@ -36,7 +36,7 @@ class City extends Model
     /*----------------  RELATIONS  ----------------*/
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
     }
 
     public function from_city(){

@@ -10,6 +10,7 @@ $routeID = old('route', $route);
 $stopsList = array();
 $from_stop = null;
 $to_stop = null;
+$user_terminal = Auth::user()->terminal;
 if($routeID > 0){
     $route = \App\Models\Route\Route::find($routeID);
     if($route !== null){
@@ -54,9 +55,11 @@ if($routeID > 0){
         </div>
         <div class="col-md-2">
             <div class="form-group">
-                <?php $route = \App\Models\Route\Route::whereHas('stops', function($query){
-                    return $query->where('terminal_id', Auth::user()->terminal_id);
-                })->selection(); ?>
+                <?php $route = \App\Models\Route\Route::where('to_terminal_id', '!=', $user_terminal->id)
+                        ->whereHas('stops', function($query){
+                            return $query->where('terminal_id', Auth::user()->terminal_id);
+                        })->selection();
+                ?>
                 {{ Form::label('route', 'Route') }}
                 {{ Form::select('route', $route, $routeID, ['class' => 'form-control', 'placeholder'=>'- Select Route -', 'required'])}}
             </div><!--form-group-->
@@ -64,7 +67,7 @@ if($routeID > 0){
         <div class="col-md-2">
             <div class="form-group">
                 {{ Form::label('from_stop', 'Departure') }}
-                {{ Form::select('from_stop', $stopsList, $from_stop, ['class' => 'form-control', 'placeholder'=>'- Select Stop -', 'required'])}}
+                {{ Form::select('from_stop', array($user_terminal->id=>$user_terminal->title), $from_stop, ['class' => 'form-control', 'placeholder'=>'- Select Stop -', 'required'])}}
             </div><!--form-group-->
         </div>
         <div class="col-md-2">

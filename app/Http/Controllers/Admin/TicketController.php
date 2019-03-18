@@ -6,6 +6,8 @@ use App\Http\Requests\TicketBook;
 use App\Models\Customer;
 use App\Models\Route\Fare;
 use App\Models\Route\Route;
+use App\Models\Route\Stop;
+use App\Models\Terminal;
 use App\Models\Ticket\Ticket;
 use App\Models\Ticket\TicketSeat;
 use App\Traits\CommenFunctions;
@@ -89,7 +91,7 @@ class TicketController extends Controller
      */
     public function store(TicketBook $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         // Check selected seats are available
         $schedule = Schedule::find($request->schedule_id);
         $bookingdate = $request->booking_date;
@@ -104,6 +106,15 @@ class TicketController extends Controller
             }
         }
 
+        $from_stop = Stop::where([
+            ['route_id',$request->route],
+            ['terminal_id',$request->from_stop]
+        ])->get()->first()->sort_order;
+        $to_stop = Stop::where([
+            ['route_id',$request->route],
+            ['terminal_id',$request->to_stop]
+        ])->get()->first()->sort_order;
+
         // set ticket data
         $ticket = new Ticket();
         $ticket->p_phone = $request->p_phone;
@@ -112,8 +123,8 @@ class TicketController extends Controller
         $ticket->total_seats = $request->total_seats;
         $ticket->seat_numbers = $request->seat_numbers;
         //$ticket->remarks = $request->remarks;
-        $ticket->from_city_id = $schedule->route->from_city_id;
-        $ticket->to_city_id = $schedule->route->to_city_id;
+        $ticket->from_city_id =Terminal::find($request->from_stop)->city_id;
+        $ticket->to_city_id = Terminal::find($request->to_stop)->city_id;;
         $ticket->from_stop = $request->from_stop;
         $ticket->to_stop = $request->to_stop;
         $ticket->fare = $request->fare;
@@ -125,8 +136,10 @@ class TicketController extends Controller
         $ticket->btype_id = 2;
         $ticket->paid = $request->paid ? 1 : 0;
         $ticket->booking_for = $request->booking_date . ' ' . date('H:m:i', strtotime($schedule->depart_time));
-        //$ticket->from_stop = $request->from_stop;
-        //$ticket->to_stop = $request->to_stop;
+        $ticket->from_sort = $from_stop;
+        $ticket->to_sort = $to_stop;
+
+        // dd($ticket->toArray());
 
         // Get customer id if CNIC is exiting otherwise create new customer
         $customer = Customer::updateOrCreate(['cnic' => $request->p_cnic], [
@@ -149,6 +162,8 @@ class TicketController extends Controller
                     $seat['seat'] = $seat_no;
                     $seat['gender'] = $gendor;
                     $seat['type'] = $ticket->btype_id;
+                    $seat['from_sort'] = $from_stop;
+                    $seat['to_sort'] = $to_stop;
                     $seats[] = new TicketSeat($seat);
                 }
                 $ticket->seats()->saveMany($seats);
@@ -256,10 +271,24 @@ class TicketController extends Controller
     {
         $schedule = $req->schedule;
         $date = $req->bookingdate;
-        $seats = TicketSeat::whereHas('ticket', function ($query) use ($schedule, $date) {
+
+        $from_sort = Stop::where([
+            ['route_id', $req->route],
+            ['terminal_id', $req->from_stop]
+        ])->get()->first()->sort_order;
+        /*$to_sort = Stop::where([
+            ['route_id', $req->route],
+            ['terminal_id', $req->to_stop]
+        ])->get()->first()->sort_order;*/
+
+        //dd($from_sort);
+
+        $seats = TicketSeat::where('to_sort', '>', $from_sort)->whereHas('ticket', function ($query) use ($schedule, $date) {
             return $query->where('schedule_id', $schedule)
                          ->whereDate('booking_for', $date);
         })->get()->toArray();
+
+        //dd($seats);
 
         $schedule = Schedule::find($req->schedule);
         $data['schedule'] = $schedule;
@@ -281,16 +310,13 @@ class TicketController extends Controller
 
         $ticket = Ticket::find($ticket);
         if ($ticket != null) {
-
             $data['error'] = false;
             $data['ticket'] = $ticket;
             $data['deduction'] = $this->refundDetection($ticket);
-
             $ticket->seats()->delete();
             $ticket->status = 0;
             $ticket->save();
             $ticket->delete();
-
         } else
             $data = array('error' => 1, 'msg' => 'Ticket Not found');
 

@@ -17,8 +17,8 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Department</th>
-                            <th>Designation</th>
+                            <th>City</th>
+                            <th>Terminal</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -29,8 +29,8 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone }}</td>
-                                <td>{{ $user->department->code ?? '' }}</td>
-                                <td>{{ $user->designation->code ?? '' }}</td>
+                                <td>{{ $user->city->name ?? '-' }}</td>
+                                <td>{{ $user->terminal->title ?? '' }}</td>
                                 <td>
                                     <button data-delete="{{ route('admin.users.destroy', $user->id) }}" class="btn btn-danger btn-sm delete"><span class="icon-trashcan"></span></button>
                                     <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-info btn-sm delete"><span class="icon-pencil2"></span></a>

@@ -13,170 +13,162 @@
         </div>
     @endif
 
-    <?php
-    $terminal_exps = \App\Models\ExpenseType::where('terminal_deduct', 1)->Selection();
-    $route_exps = \App\Models\ExpenseType::where('terminal_deduct', 0)->Selection();
-    ?>
+<?php
+$terminal_exps = \App\Models\ExpenseType::where('terminal_deduct', 1)->Selection();
+$route_exps = \App\Models\ExpenseType::where('terminal_deduct', 0)->Selection();
+?>
 
-    <div class="row gutter">
-        <div class="col-xs-12">
-            <div class="panel">
-                <div class="panel-body">
+<div class="row gutter">
+    <div class="col-xs-12">
+        <div class="panel">
+            <div class="panel-body">
 
-                    {!! Form::open(['route' => 'admin.voucher.store']) !!}
-                    <div class="row gutter">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                {{ Form::label('voucherdate', 'Date *') }}
-                                {{ Form::text('voucherdate', Date('Y-m-d'),  ['class' => 'form-control', 'readonly']) }}
-                            </div><!--form-group-->
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <?php $buses = \App\Models\Bus\Bus::list(); ?>
-                                {{ Form::label('bus_id', 'Bus *') }}
-                                {{ Form::select('bus_id', $buses, null,  ['class' => 'form-control', 'placeholder'=> '- Select Bus -'])}}
-                            </div><!--form-group-->
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                {{ Form::label('voucherid', 'Add Voucher *') }}
-                                <div class="input-group">
-                                    {{ Form::text('voucherid',null,  ['class' => 'form-control', 'placeholder'=> 'Voucher ID'])}}
-                                    <span class="input-group-addon btn btn-primary bg-dark" id="addvoucher"><i class="m-0 fa fa-plus"></i></span>
-                                </div>
-                            </div><!--form-group-->
-                        </div>
-                        <div class="row gutter">
-                            <div class="col-xs-12">
-                                <div class="p-3 bg-primary">Voucher Details</div>
-                                <table class="table table-bordered table-hover table-striped">
-                                    <thead>
-                                    <tr>
-                                        <td width="100">VoucherID#</td>
-                                        <td>Route</td>
-                                        <td>Terminal</td>
-                                        <td width="100">Date</td>
-                                        <td width="90">Time</td>
-                                        <td width="50">PSGs</td>
-                                        <td width="50">Income</td>
-                                        <td>En.PSGs</td>
-                                        <td>En.Income</td>
-                                        <td>Cargo</td>
-                                        {{--<td>Total</td>--}}
-                                    </tr>
-                                    </thead>
-                                    <tbody id="bordingrows">
-                                    </tbody>
-                                </table>
-
-                                <div class="p-3 bg-primary">Terminal Expenses Details</div>
-                                <table class="table table-bordered table-hover table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th width="100">VoucherID#</th>
-                                        <th>Terminal</th>
-                                        @forelse($terminal_exps as $term_exp_id => $term_exp)
-                                            <th width="50">{{ $term_exp }}</th>
-                                        @empty
-                                        @endforelse
-                                    </tr>
-                                    </thead>
-                                    <tbody id="expensesrows">
-                                    {{--<tr>
-                                        <th>50064</th>
-                                        <td>LHR Bus Add</td>
-                                        @forelse($terminal_exps as $term_exp_id => $term_exp)
-                                            <td>{{ $term_exp_id }}</td>
-                                        @empty
-                                        @endforelse
-                                    </tr>--}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row gutter">
-
-                            <div class="col-md-6">
-                                <div class="p-3 bg-primary">Route Expenses</div>
-                                <table class="table table-bordered table-hover table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Expense Type</th>
-                                        <th width="200">Amount</th>
-                                        <th width="50"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="expeslist">
-                                    <tr>
-                                        <td>
-                                            {{ Form::select('route_exps[1][id]', $route_exps, 8, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
-                                        </td>
-                                        <td><input type="number" class="form-control" name="route_exps[1][amount]" required></td>
-                                        <td><button type="button" class="btn btn-primary" disabled><span class="fa fa-times"></span></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ Form::select('route_exps[2][id]', $route_exps, 9, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
-                                        </td>
-                                        <td><input type="number" class="form-control" name="route_exps[2][amount]" required></td>
-                                        <td><button type="button" class="btn btn-primary" disabled><span class="fa fa-times"></span></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ Form::select('route_exps[3][id]', $route_exps, 22, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
-                                        </td>
-                                        <td><input type="number" class="form-control" name="route_exps[3][amount]" value="0" required></td>
-                                        <td><button type="button" class="btn btn-primary"><span class="fa fa-times"></span></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ Form::select('route_exps[4][id]', $route_exps, 23, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
-                                        </td>
-                                        <td><input type="number" class="form-control" name="route_exps[4][amount]" value="0" required></td>
-                                        <td><button type="button" class="btn btn-primary"><span class="fa fa-times"></span></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {{ Form::select('route_exps[5][id]', $route_exps, 18, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
-                                        </td>
-                                        <td><input type="number" class="form-control" name="route_exps[5][amount]" value="0" required></td>
-                                        <td><button type="button" class="btn btn-primary"><span class="fa fa-times"></span></button></td>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <td colspan="3">
-                                            <button class="btn btn-primary" type="button" id="addexptype">
-                                                <span class="fa fa-plus"></span> Add Expense Row</button>
-                                        </td>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row gutter">
-                            <div class="col-md-6 col-sm-12">
-                                <div class="form-group clearfix">
-                                    {{ Form::submit( 'Save', ['class' => 'btn btn-success btn-block py-3']) }}
-                                </div><!--form-group-->
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                                <div class="form-group clearfix">
-                                    <a href="{{ route('admin.route.index') }}" class="btn btn-default btn-block py-3">Cancel</a>
-                                </div><!--form-group-->
-                            </div>
-                        </div>
-
+                {!! Form::open(['route' => 'admin.voucher.store']) !!}
+                <div class="row gutter">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            {{ Form::label('voucherdate', 'Date *') }}
+                            {{ Form::text('voucherdate', Date('Y-m-d'),  ['class' => 'form-control', 'readonly']) }}
+                        </div><!--form-group-->
                     </div>
-                    {!! Form::close() !!}
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <?php $buses = \App\Models\Bus\Bus::list(); ?>
+                            {{ Form::label('bus_id', 'Bus *') }}
+                            {{ Form::select('bus_id', $buses, null,  ['class' => 'form-control', 'placeholder'=> '- Select Bus -'])}}
+                        </div><!--form-group-->
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            {{ Form::label('voucherid', 'Add Voucher *') }}
+                            <div class="input-group">
+                                {{ Form::text('voucherid',null,  ['class' => 'form-control', 'placeholder'=> 'Voucher ID'])}}
+                                <span class="input-group-addon btn btn-primary bg-dark" id="addvoucher"><i class="m-0 fa fa-plus"></i></span>
+                            </div>
+                        </div><!--form-group-->
+                    </div>
+                    <div class="row gutter">
+                        <div class="col-xs-12">
+                            <div class="p-3 bg-primary">Voucher Details</div>
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <td width="100">VoucherID#</td>
+                                    <td>Route</td>
+                                    <td>Terminal</td>
+                                    <td width="100">Date</td>
+                                    <td width="90">Time</td>
+                                    <td width="50">PSGs</td>
+                                    <td width="50">Income</td>
+                                    <td>En.PSGs</td>
+                                    <td>En.Income</td>
+                                    <td>Cargo</td>
+                                    {{--<td>Total</td>--}}
+                                </tr>
+                                </thead>
+                                <tbody id="bordingrows">
+                                </tbody>
+                            </table>
+
+                            <div class="p-3 bg-primary">Terminal Expenses Details</div>
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="100">VoucherID#</th>
+                                    <th>Terminal</th>
+                                    @forelse($terminal_exps as $term_exp_id => $term_exp)
+                                        <th width="50">{{ $term_exp }}</th>
+                                    @empty
+                                    @endforelse
+                                </tr>
+                                </thead>
+                                <tbody id="expensesrows">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row gutter">
+
+                        <div class="col-md-6">
+                            <div class="p-3 bg-primary">Route Expenses</div>
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Expense Type</th>
+                                    <th width="200">Amount</th>
+                                    <th width="50"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="expeslist">
+                                <tr>
+                                    <td>
+                                        {{ Form::select('route_exps[1][id]', $route_exps, 8, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
+                                    </td>
+                                    <td><input type="number" class="form-control" name="route_exps[1][amount]" required></td>
+                                    <td><button type="button" class="btn btn-primary" disabled><span class="fa fa-times"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ Form::select('route_exps[2][id]', $route_exps, 9, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
+                                    </td>
+                                    <td><input type="number" class="form-control" name="route_exps[2][amount]" required></td>
+                                    <td><button type="button" class="btn btn-primary" disabled><span class="fa fa-times"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ Form::select('route_exps[3][id]', $route_exps, 22, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
+                                    </td>
+                                    <td><input type="number" class="form-control" name="route_exps[3][amount]" value="0" required></td>
+                                    <td><button type="button" class="btn btn-primary"><span class="fa fa-times"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ Form::select('route_exps[4][id]', $route_exps, 23, ['class'=>'form-control', 'placeholder'=>'- Select Expense Type -']) }}
+                                    </td>
+                                    <td><input type="number" class="form-control" name="route_exps[4][amount]" value="0" required></td>
+                                    <td><button type="button" class="btn btn-primary"><span class="fa fa-times"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ Form::select('route_exps[5][id]', $route_exps, 18, ['class'=>'form-control', 'placeholder' => '- Select Expense Type -']) }}
+                                    </td>
+                                    <td><input type="number" class="form-control" name="route_exps[5][amount]" value="0" required></td>
+                                    <td><button type="button" class="btn btn-primary"><span class="fa fa-times"></span></button></td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="3">
+                                        <button class="btn btn-primary" type="button" id="addexptype">
+                                            <span class="fa fa-plus"></span> Add Expense Row</button>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row gutter">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group clearfix">
+                                {{ Form::submit( 'Save', ['class' => 'btn btn-success btn-block py-3']) }}
+                            </div><!--form-group-->
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group clearfix">
+                                <a href="{{ route('admin.route.index') }}" class="btn btn-default btn-block py-3">Cancel</a>
+                            </div><!--form-group-->
+                        </div>
+                    </div>
 
                 </div>
+                {!! Form::close() !!}
+
             </div>
         </div>
     </div>
+</div>
 
 @endsection
 

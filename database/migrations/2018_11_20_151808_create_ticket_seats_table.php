@@ -19,7 +19,10 @@ class CreateTicketSeatsTable extends Migration
             $table->text('seat');
             $table->enum('gender', ['M', 'F']);
             $table->integer('ticket_id')->unsigned();
-            //$table->enum('type', ['M', 'F']);
+
+            $table->integer('from_sort')->nullable();
+            $table->integer('to_sort')->nullable();
+
             $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
