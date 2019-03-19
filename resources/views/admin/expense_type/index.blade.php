@@ -17,7 +17,7 @@
                             <th>Title</th>
                             <th width="80">Amount</th>
                             <th width="150">Terminal Deduct</th>
-                            <th width="100">Changealbe</th>
+                            <th width="100">GL A/C</th>
                             <th width="80">Status</th>
                             <th width="140">Action</th>
                         </tr>
@@ -29,7 +29,7 @@
                                 <td class="text-left">{{ $expense_type->title }}</td>
                                 <td>{{ $expense_type->amount }}</td>
                                 <td><span class="fa fa-{{ $expense_type->terminal_deduct?'check':'times' }}"></span></td>
-                                <td><span class="fa fa-{{ $expense_type->changeable?'check':'times' }}"></span></td>
+                                <td>{{ $expense_type->refcode }}</td>
                                 <td>{{ $expense_type->status?'Active':'Deactive' }}</td>
                                 <td>
                                     <button data-delete="{{ route('admin.expense_type.destroy', $expense_type->id) }}" class="btn btn-danger btn-sm delete"><span class="icon-trashcan"></span></button>

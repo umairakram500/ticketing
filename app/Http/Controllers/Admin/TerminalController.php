@@ -88,7 +88,16 @@ class TerminalController extends Controller
     {
         $data['cities'] = City::selection('name');
         $data['terminal'] = $terminal;
-        $data['expenses'] = $terminal->expenses->pluck('amount', 'expensetype_id');
+        $data['expenses'] = array();
+        $expenses = $terminal->expenses;
+        if(count($expenses)){
+            foreach($expenses as $expense){
+            $data['expenses'][$expense->bustype_id][$expense->expensetype_id]['amount'] = $expense->amount;
+            $data['expenses'][$expense->bustype_id][$expense->expensetype_id]['per_seat'] = $expense->per_seat;
+            }
+        }
+
+        //dd($data);
 
         return view("admin.terminal.edit", $data);
     }
@@ -119,6 +128,8 @@ class TerminalController extends Controller
         $terminal->lng      = $request->lng;
         $terminal->refcode  = $request->refcode;
         $terminal->terminal_type = $request->terminal_type;
+
+        //dd($request->expenses);
 
         if($terminal->save()){
             $this->saveExpenses($terminal, $request->expenses);
@@ -172,21 +183,22 @@ class TerminalController extends Controller
                 'msg' => 'Terminal Successfully '.($terminal->status?"Activated":"Deactivated")
             );
         }
-
         return response($response);
-
     }
 
     public function saveExpenses($terminal, $expenses)
     {
         if(count($expenses))
         {
-            foreach($expenses as $expid => $expamt){
-                ExpensetypeTerminal::updateOrCreate(
-                    [ 'terminal_id' => $terminal->id, 'expensetype_id' => $expid ],
-                    [ 'amount' => $expamt ]
-                );
+            foreach($expenses as $id => $exps) {
+                foreach ($exps as $expid => $expamt) {
+                    ExpensetypeTerminal::updateOrCreate(
+                        ['terminal_id' => $terminal->id, 'expensetype_id' => $expid, 'bustype_id' => $id],
+                        ['amount' => $expamt['amount'], 'per_seat' => isset($expamt['per_seat'])?1:0 ]
+                    );
+                }
             }
         }
+
     }
 }

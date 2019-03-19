@@ -22,6 +22,7 @@ class CreateRouteExpensesTable extends Migration
             $table->integer('route_id')->unsigned()->nullable();
             $table->integer('exptype_id')->unsigned();
             $table->integer('amount')->unsigned();
+            $table->integer('bustype_id')->unsigned();
 
             $table->foreign('voucher_id')->references('id')->on('vouchers')->onDelete('cascade');
             $table->foreign('bus_id')->references('id')->on('buses');

@@ -71,6 +71,7 @@ class BoardingController extends Controller
 
             $data['total_fare'] = $tickets->sum('total_fare');
             $data['total_discount'] = $tickets->sum('discount');
+            $data['bus_type'] = $schedule->luxury_type;
 
         }
 

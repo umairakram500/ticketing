@@ -84,14 +84,27 @@
                             ['terminal_deduct', 1],
                             ['status', 1]
                     ])->get();
-                    $ter_exps = \App\Models\ExpensetypeTerminal::where('terminal_id', Auth::user()->terminal_id)->get()->pluck('amount', 'expensetype_id')->toArray();
+                    $ter_exps = \App\Models\ExpensetypeTerminal::where('terminal_id', Auth::user()->terminal_id)->get()->toArray();
+                        $terExps = array(); //$ter_exps->pluck('amount', 'expensetype_id')->toArray();
+                        //$terExpPerSeat = $ter_exps->pluck('per_seat', 'expensetype_id')->toArray();
+                        //dd($terExpPerSeat);
+                        if(count($ter_exps)){
+                            foreach($ter_exps as $ter_exp){
+                                //dd($ter_exp);
+                                $terExps[$ter_exp['expensetype_id']] = $ter_exp['amount'] * ($ter_exp['per_seat'] ? $total_seats : 1);
+                            }
+                        }
+                        //dd($terExps);
                     ?>
 
                     <table class="table table-bordered">
                         @forelse($expenses as $expense)
+                            <?php
+
+                            ?>
                             <tr>
                                 <td>{{ $expense->title }}</td>
-                                <td>{{ Form::text('exp['.$expense->id.']', ($ter_exps[$expense->id] ?? 0), ['class' => 'form-control'])}}</td>
+                                <td>{{ Form::text('exp['.$expense->id.']', ($terExps[$expense->id] ?? 0), ['class' => 'form-control'])}}</td>
                             </tr>
                         @empty
                         @endforelse
@@ -135,8 +148,8 @@
                                 <td>{{ $total_fare }} {{ Form::hidden('total_fare', $total_fare) }}</td>
                                 <td>{{ $total_discount }} {{ Form::hidden('total_discount', $total_discount) }}</td>
                                 <td>-</td>
-                                <td>{{ array_sum($ter_exps) }}</td>
-                                <td>{{ $total_fare - $total_discount - array_sum($ter_exps) }}</td>
+                                <td>{{ array_sum($terExps) }}</td>
+                                <td>{{ $total_fare - $total_discount - array_sum($terExps) }}</td>
                             </tr>
                         </table>
                     </div>

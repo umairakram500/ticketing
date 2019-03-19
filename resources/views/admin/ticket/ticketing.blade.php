@@ -89,10 +89,14 @@ if($routeID > 0){
         <div class="col-sm-12 legneds pb-4">
             <table class="legends">
                 <tr>
+                    <td><span class="bk lb lbm"></span></td>
+                    <td>Reserved</td>
                     <td><span class="bk lb"></span></td>
                     <td>Reserved</td>
+                    <td><span class="bk gb gbl"></span></td>
+                    <td>Gents Issued</td>
                     <td><span class="bk gb"></span></td>
-                    <td>Ticket Issued</td>
+                    <td>Ladies Issued</td>
                     <td><span class="bk va"></span></td>
                     <td>Vaccant</td>
                 </tr>

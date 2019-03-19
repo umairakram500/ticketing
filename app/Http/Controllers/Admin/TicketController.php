@@ -276,10 +276,10 @@ class TicketController extends Controller
             ['route_id', $req->route],
             ['terminal_id', $req->from_stop]
         ])->get()->first()->sort_order;
-        $to_sort = Stop::where([
+        /*$to_sort = Stop::where([
             ['route_id', $req->route],
             ['terminal_id', $req->to_stop]
-        ])->get()->first()->sort_order;
+        ])->get()->first()->sort_order;*/
 
         //dd($from_sort);
 

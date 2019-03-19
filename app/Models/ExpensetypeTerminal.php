@@ -8,6 +8,6 @@ class ExpensetypeTerminal extends Model
 {
     protected $table = 'expensetypes_terminals';
     protected $fillable = [
-        'expensetype_id', 'terminal_id', 'amount'
+        'expensetype_id', 'terminal_id', 'amount', 'bustype_id', 'per_seat'
     ];
 }

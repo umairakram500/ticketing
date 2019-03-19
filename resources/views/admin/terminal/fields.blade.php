@@ -47,23 +47,47 @@
 
 <?php
 $oldexps = old('expenses');
-if($oldexps != null)
+if($oldexps != null){
     $expenses = $oldexps;
+}
+$exps = \App\Models\ExpenseType::where('terminal_deduct', 1)->get();
 ?>
 
     <div class="row gutter">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-md-5">
             <label><strong>Terminal Expenses</strong></label>
-            <?php $exps = \App\Models\ExpenseType::where('terminal_deduct', 1)->get() ?>
-            <table class="table table-bordered">
-                @forelse($exps as $exp)
-                    <tr>
-                        <td>{{ $exp->title }}</td>
-                        <td><input type="number" name="expenses[{{ $exp->id }}]" class="form-control" value="{{ $expenses[$exp->id] ?? $exp->amount }}"></td>
-                    </tr>
+
+            <?php $luxury_types = \App\Models\Bus\LuxuryType::selection(); ?>
+            <?php $i=0 ?>
+            <ul class="nav nav-tabs">
+                @forelse($luxury_types as $typeid => $type)
+                    <li class="{{$i==0?'active':''}}"><a data-toggle="tab" href="#tab_{{$typeid}}">{{$type}}</a></li>
+                    <?php $i++ ?>
                 @empty
                 @endforelse
-            </table>
+            </ul>
+            <div class="tab-content">
+                <?php $i=0 ?>
+                @forelse($luxury_types as $typeid => $type)
+                    <div id="tab_{{ $typeid }}" class="tab-pane fade {{ $i==0?'in active':'' }}">
+                        <table class="table table-bordered mb-0">
+                            @forelse($exps as $exp)
+                                <tr>
+                                    <td>{{ $exp->title }}</td>
+                                    <td><input type="number" name="expenses[{{ $typeid }}][{{ $exp->id }}][amount]" class="form-control" value="{{ $expenses[$typeid][$exp->id]['amount'] ?? $exp->amount }}"></td>
+                                    <td>
+                                        <input type="checkbox" name="expenses[{{ $typeid }}][{{ $exp->id }}][per_seat]" {{ isset($expenses[$typeid][$exp->id]) && $expenses[$typeid][$exp->id]['per_seat'] == 1 ? 'checked' : '' }} >
+                                    </td>
+                                </tr>
+                            @empty
+                            @endforelse
+                        </table>
+                    </div>
+                    <?php $i++ ?>
+                @empty
+                @endforelse
+            </div>
+
         </div>
         <div class="col-md-6">
             <div class="form-group">
