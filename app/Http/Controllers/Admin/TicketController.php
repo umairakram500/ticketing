@@ -219,7 +219,7 @@ class TicketController extends Controller
 
         $route = Route::find($schedule->route_id);
         //print_r($route->title); exit;
-        return view('admin.ticket.show', compact('ticket', 'route', 'schedule'));
+        return view('admin.ticket.print', compact('ticket', 'route', 'schedule'));
     }
 
     /**

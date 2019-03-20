@@ -54,7 +54,7 @@ $terminals = \App\Models\Terminal::selection();
             ?>
             {{ Form::label('stops', 'Stops') }}
 
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th width="10"><strong>#</strong></th>
@@ -101,16 +101,37 @@ $terminals = \App\Models\Terminal::selection();
                     {{ Form::number('act_kms', null, ['class' => 'form-control'])}}
                 </div><!--form-group-->
             </div>
-            <div class="col-xs-4">
+            {{--<div class="col-xs-4">
                 <div class="form-group">
                     {{ Form::label('diesel', 'Diesel *') }}
                     {{ Form::number('diesel', null, ['class' => 'form-control'])}}
                 </div><!--form-group-->
-            </div>
+            </div>--}}
         </div>
+        <?php $bustypes = \App\Models\Bus\LuxuryType::selection(); ?>
+        {{ Form::label('diesel', 'Diesel *') }}
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <td>Bus Type</td>
+                <td>Litres</td>
+            </tr>
+            </thead>
+            @forelse($bustypes as $typeid => $typetitle)
+            <tr>
+                <td>{{ $typetitle }}</td>
+                <td class="p0"><input type="number" class="form-control" name="diesel[{{$typeid}}]"></td>
+            </tr>
+            @empty
+            @endforelse
+        </table>
     </div>
 </div>
-
+<style>
+    td.p0 {
+        padding: 0 !important;
+    }
+</style>
 <div class="row gutter">
     <div class="col-md-6 col-sm-12">
         <div class="form-group clearfix">

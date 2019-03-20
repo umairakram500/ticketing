@@ -7,6 +7,7 @@ use App\Models\Bus\LuxuryType;
 use App\Models\City;
 use App\Models\Route\Fare;
 use App\Models\Route\Route;
+use App\Models\Route\RouteDiesel;
 use App\Models\Route\Stop;
 use App\Traits\CommenFunctions;
 use Illuminate\Http\Request;
@@ -135,7 +136,7 @@ class RouteController extends Controller
         //$this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
         if($route->save()){
             $this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
-            //$this->saveFares($request->fares, $route);
+            $this->saveDiesel($request->diesels, $route);
             Session::flash('flash_success', 'Route updated successfully');
             return redirect()->route('admin.route.index');
         }
@@ -214,7 +215,19 @@ class RouteController extends Controller
                 );
             }
         }
+    }
 
+    private function saveDiesel($route, $diesels)
+    {
+
+        if(is_array($diesels) && count($diesels)) {
+            foreach ($diesels as $bustype => $litres) {
+                $fare = RouteDiesel::updateOrCreate(
+                    ['route_id' => $route->id, 'bustype_id' => $bustype],
+                    ['littres' => $litres]
+                );
+            }
+        }
     }
 
     public function getStops(Route $route)

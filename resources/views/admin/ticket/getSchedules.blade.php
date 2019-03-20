@@ -9,9 +9,9 @@ $schedule_id = old('schedule_id');
     <td>{{ $schedule->luxuryType->title ?? '' }}</td>
     <td>{{ $schedule->luxuryType->seats ?? '' }}</td>
     {{--<td>500</td>--}}
-    <td>{{ $schedule->tickets()->sumof($bookingdate, 0) }}</td>
+   {{-- <td>{{ $schedule->tickets()->sumof($bookingdate, 0) }}</td>
     <td>{{ $schedule->tickets()->sumof($bookingdate, 1) }}</td>
-    <td>{{  $schedule->luxuryType->seats - $schedule->tickets()->sumof($bookingdate) }}</td>
+    <td>{{  $schedule->luxuryType->seats - $schedule->tickets()->sumof($bookingdate) }}</td>--}}
     <td>-</td>
     <td>-</td>
 </tr>

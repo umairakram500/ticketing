@@ -69,6 +69,14 @@
                 <th>Route</th>
                 <td>{{$route->title}}</td>
             </tr>
+            <tr>
+                <th>From Stop</th>
+                <td>{{$ticket->fromStop->title ?? ''}}</td>
+            </tr>
+            <tr>
+                <th>To Stop</th>
+                <td>{{$ticket->toStop->title ?? ''}}</td>
+            </tr>
 
             <tr>
                 <td colspan="2">

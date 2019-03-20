@@ -91,6 +91,9 @@ class Route extends Model
     public function boardings(){
         return $this->hasMany(Boarding::class);
     }
+    public function diesels(){
+        return $this->hasMany(RouteDiesel::class);
+    }
 
 
     /*----------------  SCOPES  ----------------*/

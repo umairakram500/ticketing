@@ -118,9 +118,9 @@ if($routeID > 0){
                             <th>BusType</th>
                             <th>Seats</th>
                             {{--<th>Fare</th>--}}
-                            <th>Res</th>
+                            {{--<th>Res</th>
                             <th>Deli</th>
-                            <th>Avai</th>
+                            <th>Avai</th>--}}
                             <th>Open</th>
                             <th>Status</th>
                         </tr>

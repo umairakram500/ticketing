@@ -72,6 +72,10 @@ class Ticket extends Model
         return $this->belongsTo(BookingType::class, 'btype_id');
     }
 
+    public function fromStop(){
+        return $this->belongsTo(Terminal::class, 'from_stop');
+    }
+
     public function toStop(){
         return $this->belongsTo(Terminal::class, 'to_stop');
     }
