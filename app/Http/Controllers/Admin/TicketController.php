@@ -91,12 +91,24 @@ class TicketController extends Controller
      */
     public function store(TicketBook $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         // Check selected seats are available
         $schedule = Schedule::find($request->schedule_id);
         $bookingdate = $request->booking_date;
+        $from_sort = Stop::where([
+            ['route_id',$request->route],
+            ['terminal_id',$request->from_stop]
+        ])->get()->first()->sort_order;
+        $to_sort = Stop::where([
+            ['route_id',$request->route],
+            ['terminal_id',$request->to_stop]
+        ])->get()->first()->sort_order;
+
         if (isset($request->seat)) {
-            $checkSeats = $schedule->seats()->whereHas('ticket', function ($query) use ($bookingdate) {
+            $checkSeats = $schedule->seats()->where([
+                ['to_sort', '>', $from_sort],
+                ['from_sort', '<=', $from_sort],
+            ])->whereHas('ticket', function ($query) use ($bookingdate) {
                 return $query->whereDate('booking_for', $bookingdate);
             })->whereIn('seat', array_keys($request->seat))->get()->toArray();
             $bookedseats = $this->toSelect($checkSeats, 'seat');
@@ -105,15 +117,6 @@ class TicketController extends Controller
                 return redirect()->back()->withInput();
             }
         }
-
-        $from_stop = Stop::where([
-            ['route_id',$request->route],
-            ['terminal_id',$request->from_stop]
-        ])->get()->first()->sort_order;
-        $to_stop = Stop::where([
-            ['route_id',$request->route],
-            ['terminal_id',$request->to_stop]
-        ])->get()->first()->sort_order;
 
         // set ticket data
         $ticket = new Ticket();
@@ -136,8 +139,8 @@ class TicketController extends Controller
         $ticket->btype_id = 2;
         $ticket->paid = $request->paid ? 1 : 0;
         $ticket->booking_for = $request->booking_date . ' ' . date('H:m:i', strtotime($schedule->depart_time));
-        $ticket->from_sort = $from_stop;
-        $ticket->to_sort = $to_stop;
+        $ticket->from_sort = $from_sort;
+        $ticket->to_sort = $to_sort;
 
         // dd($ticket->toArray());
 
@@ -162,8 +165,8 @@ class TicketController extends Controller
                     $seat['seat'] = $seat_no;
                     $seat['gender'] = $gendor;
                     $seat['type'] = $ticket->btype_id;
-                    $seat['from_sort'] = $from_stop;
-                    $seat['to_sort'] = $to_stop;
+                    $seat['from_sort'] = $from_sort;
+                    $seat['to_sort'] = $to_sort;
                     $seats[] = new TicketSeat($seat);
                 }
                 $ticket->seats()->saveMany($seats);
