@@ -105,12 +105,25 @@ class TicketController extends Controller
         ])->get()->first()->sort_order;
 
         if (isset($request->seat)) {
-            $checkSeats = $schedule->seats()->where([
+            /*$checkSeats = $schedule->seats()->where([
                 ['to_sort', '>', $from_sort],
                 ['from_sort', '<=', $from_sort],
             ])->whereHas('ticket', function ($query) use ($bookingdate) {
                 return $query->whereDate('booking_for', $bookingdate);
-            })->whereIn('seat', array_keys($request->seat))->get()->toArray();
+            })->whereIn('seat', array_keys($request->seat))->get()->toArray();*/
+
+            //dd(array_keys($request->seat));
+            $checkSeats = TicketSeat::where([
+                        ['to_sort', '>', $from_sort],
+                        ['from_sort', '<=', $from_sort],
+                    ])
+                    ->whereHas('ticket', function ($query) use ($schedule, $bookingdate) {
+                        return $query->where('schedule_id', $schedule->id)
+                            ->whereDate('booking_for', $bookingdate);
+                    })->whereIn('seat', array_keys($request->seat))->get()->toArray();
+
+            //dd($checkSeats);
+
             $bookedseats = $this->toSelect($checkSeats, 'seat');
             if (count($bookedseats) > 0) {
                 Session::flash('seat_error', 'Seat\'s(' . implode(',', $bookedseats) . ') not available');
@@ -290,7 +303,6 @@ class TicketController extends Controller
                     ['to_sort', '>', $from_sort],
                     ['from_sort', '<=', $from_sort],
                 ])
-            //->orWhere('from_sort', '>', $from_sort)
             ->whereHas('ticket', function ($query) use ($schedule, $date) {
                 return $query->where('schedule_id', $schedule)
                              ->whereDate('booking_for', $date);
