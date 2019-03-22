@@ -54,6 +54,7 @@ class RouteController extends Controller
      */
     public function store(RouteRequest $request)
     {
+        //dd($request->diesel);
         $route = new Route();
         $route->title = $request->title;
         $route->from_city_id = $request->from_city_id;
@@ -78,7 +79,7 @@ class RouteController extends Controller
         if($route->save()){
             $this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
             //$this->saveFares($request->fares, $route);
-            $this->saveDiesel($request->diesels, $route);
+            $this->saveDiesel($route, $request->diesel);
             Session::flash('flash_success', 'Route addedd successfully.');
             return redirect()->route('admin.route.index');
         } else {
@@ -133,14 +134,10 @@ class RouteController extends Controller
         $route->fare = $request->fare;
         $route->status = $request->status;
         $route->kms = $request->kms;
-        //$route->diesel = $request->diesel;
-        //$route->travel_time = $request->hrs.":".$request->mins;
-        //$route->stations = json_encode($request->stations) ;
-        //$route->kms = $request->kms;
-        //$this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
+
         if($route->save()){
             $this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
-            $this->saveDiesel($request->diesels, $route);
+            $this->saveDiesel($route, $request->diesel);
             Session::flash('flash_success', 'Route updated successfully');
             return redirect()->route('admin.route.index');
         }

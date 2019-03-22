@@ -3,7 +3,7 @@ $terminals = \App\Models\Terminal::selection();
 $oldDiesel = old('diesel');
 if($oldDiesel != null)
 {
-    $diesle = $oldDiesel;
+    $diesel = $oldDiesel;
 }
 ?>
 <div class="row gutter">
