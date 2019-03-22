@@ -52,6 +52,12 @@ class Boarding extends Model
     public function to(){
         return $this->belongsTo(Terminal::class, 'to_terminal');
     }
+    public function fromcity(){
+        return $this->belongsTo(City::class, 'from_city');
+    }
+    public function tocity(){
+        return $this->belongsTo(City::class, 'to_city');
+    }
 
     public function driver()
     {

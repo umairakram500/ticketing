@@ -8,6 +8,7 @@ use App\Models\RouteExpense;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class VoucherController extends Controller
 {
@@ -19,7 +20,8 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        //
+        $vouchers = Voucher::where('terminal_id', Auth::user()->terminal_id);
+        return view('admin.voucher.index', ['vouchers' => $vouchers]);
     }
 
     /**
@@ -70,8 +72,6 @@ class VoucherController extends Controller
                     $nexp['bus_id'] = $request->bus_id;
                     $nexp['exptype_id'] = $exp['id'];
                     $nexp['amount'] = $exp['amount'];
-                    //$nexp['voucher_id'] = $voucher->id;
-
                     $exps[] = new RouteExpense($nexp);
                 }
             }
@@ -100,9 +100,7 @@ class VoucherController extends Controller
     public function show($id)
     {
         $voucher = Voucher::find($id);
-        //dd( $voucher->routeExps()->with('expense_type')->get()->pluck('expense_type.title', 'amount')->toArray() );
         $data['voucher'] = $voucher;
-
         return view('admin.voucher.print', $data);
     }
 

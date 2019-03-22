@@ -14,29 +14,24 @@
                         <tr>
                             <th>#</th>
                             <th>Schedule</th>
-                            <th>From City</th>
-                            <th>To City</th>
+                            <th>Destination</th>
                             <th>Net cash</th>
-                            <th>Edit</th>
+                            <th>Date/time</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($list as $key => $item)
+                        @forelse($boardings as $key => $boarding)
 
 
                             <tr>
-                                <td>{{ $key+1 }}</td>
-                                <td>{{ $item->schedule_id }}</td>
-                                <td>{{ $item->from_city }}</td>
-                                <td>{{ $item->to_city }}</td>
-                        
-                                <td>{{ $item->netcash }}</td>
-
-                            
+                                <td>{{ $boarding->id }}</td>
+                                <td>{{ $boarding->schedule_id }}</td>
+                                <td>{{ $boarding->to->title ?? '' }}</td>
+                                <td>{{ $boarding->netcash }}</td>
+                                <td>{{ $boarding->created_at }}</td>
                                 <td>
-                                    <button data-delete="{{ route('admin.boarding.destroy', $item->id) }}" class="btn btn-danger btn-sm delete"><span class="icon-trashcan"></span></button>
-                                    <a href="{{ route('admin.boarding.edit', $item->id) }}" class="btn btn-info btn-sm delete"><span class="icon-pencil2"></span></a>
-                                    
+                                    <a href="{{ route('admin.boarding.show', $boarding->id) }}" class="btn btn-primary btn-sm">Print</a>
                                 </td>
                             </tr>
                         @empty
@@ -55,9 +50,4 @@
 
 @endsection
 
-@push('buttons')
-<li>
-    <a href="{{ route('admin.boarding.create') }}" class="btn btn-success"><i class="icon-plus"></i>add Boarding</a>
-</li>
-@endpush
 

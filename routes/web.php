@@ -186,7 +186,7 @@ Route::name('admin.')->prefix('admin')->namespace('Admin')->group(function () {
         Route::get('ui/schedule', 'UiController@schedule');
         Route::get('ui/fares', 'UiController@fares');
         Route::get('ui/show', 'UiController@show');
-        Route::view('boarding', 'admin.board.fieldsdummy');
+        //Route::view('boarding', 'admin.board.fieldsdummy');
         Route::view('route_exp', 'admin.board.route_exp');
 
         // Boarding

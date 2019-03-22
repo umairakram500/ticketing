@@ -31,8 +31,8 @@ class BoardingController extends Controller
      */
     public function index()
     {
-        $list = Boarding::All();
-        return view('admin.board.index', ['list' => $list]);
+        $boardings = Boarding::where('from_terminal', Auth::user()->terminal_id)->get();
+        return view('admin.board.index', ['boardings' => $boardings]);
     }
 
     /**

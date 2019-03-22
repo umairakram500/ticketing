@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Cities')
+@section('title', 'Route Expenses')
 
 @section('content')
 
@@ -13,28 +13,32 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Remarks</th>
-                            <th>Status</th>
-                            <th>action</th>
+                            <th>Bus</th>
+                            {{--<th>Route</th>--}}
+                            <th>Income</th>
+                            <th>Terminal Exps</th>
+                            <th>Route Exps</th>
+                            <th>Profit/Loss</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @forelse($list as $key => $item)
+                        @forelse($vouchers as $key => $voucher)
                             <tr>
-                                <td>{{ $key+1 }}</td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->remarks }}</td>
-                                <td>{{ $item->status?'Active':'Deactive' }}</td>
+                                <td>{{ $voucher->id }}</td>
+                                <td>{{ $voucher->bus->number ?? '' }}</td>
+                                {{--<td>{{ $voucher->route->title ?? '' }}</td>--}}
+                                <td>{{ $voucher->income }}</td>
+                                <td>{{ $voucher->terminal_exps }}</td>
+                                <td>{{ $voucher->route_exps }}</td>
+                                <td>{{ $voucher->income - $voucher->terminal_exps - $voucher->terminal_exps - $voucher->route_exps }}</td>
                                 <td>
-                                    <button data-delete="{{ route('admin.city.destroy', $item->id) }}" class="btn btn-danger btn-sm delete"><span class="icon-trashcan"></span></button>
-                                    <a href="{{ route('admin.city.edit', $item->id) }}" class="btn btn-info btn-sm delete"><span class="icon-pencil2"></span></a>
-                                    <button data-status="{{ route('admin.city.status', $item->id) }}" title="{{ !$item->status?'Activate':'Deactivate' }}" class="btn btn-info btn-sm delete"><span class="icon-cycle"></span></button>
+                                    <a href="{{ route('admin.voucher.show', $voucher->id) }}" class="btn btn-primary btn-sm">Print</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center">No recode found!</td>
+                                <td colspan="7" class="text-center">No recode found!</td>
                             </tr>
                         @endforelse
                         </tbody>

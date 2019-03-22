@@ -45,7 +45,7 @@
             <td>Seat No</td>
         </tr>
         <tr>
-            <td colspan="5">{{ $boarding->terminal->title }}</td>
+            <td colspan="5">{{ $boarding->terminal->title ?? '' }}</td>
         </tr>
         @forelse($ticketStops as $ticket)
         <tr>
@@ -79,7 +79,7 @@
         </tr>
         <tr>
             @forelse($expenses as $expense)
-                <td>{{ $expense->title }}</td>
+                <td>{{ $expense->title ?? '' }}</td>
             @empty
             @endforelse
         </tr>
@@ -88,7 +88,7 @@
     <thead>
         <tr>
             @forelse($expenses as $expense)
-                <td>{{ $explist[$expense->id] }}</td>
+                <td>{{ $explist[$expense->id] ?? '' }}</td>
             @empty
             @endforelse
         </tr>

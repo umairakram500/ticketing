@@ -107,6 +107,22 @@
         </li>
         @endif
 
+        <!-- boarding -->
+        <li class="{{request()->is('admin/boarding*')?'selected active':''}}">
+            <a href="{{ route('admin.boarding.index') }}">
+                <i class="fa fa-bus"></i>
+                <span class="menu-item">Boarding</span>
+            </a>
+        </li>
+
+        <!-- Route Expense -->
+        <li class="{{request()->is('admin/voucher*')?'selected active':''}}">
+            <a href="{{ route('admin.voucher.index') }}">
+                <i class="fa fa-ticket"></i>
+                <span class="menu-item">Vouchers</span>
+            </a>
+        </li>
+
         <!-- users -->
         @if(Auth::user()->permission('users'))
             <li class="{{request()->is('admin/users*')||request()->is('admin/roles*')||request()->is('admin/designation*')||request()->is('admin/department*')?'selected active':''}}">

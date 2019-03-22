@@ -47,6 +47,10 @@ class City extends Model
         return $this->hasMany(City::class, 'to_city_id');
     }
 
+    public function boarding(){
+        return $this->hasMany(Boarding::class);
+    }
+
     public function terminal(){
         return $this->hasMany(Terminal::class);
     }
