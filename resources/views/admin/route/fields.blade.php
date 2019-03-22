@@ -1,5 +1,10 @@
 <?php
 $terminals = \App\Models\Terminal::selection();
+$oldDiesel = old('diesel');
+if($oldDiesel != null)
+{
+    $diesle = $oldDiesel;
+}
 ?>
 <div class="row gutter">
     <div class="col-sm-12">
@@ -120,7 +125,7 @@ $terminals = \App\Models\Terminal::selection();
             @forelse($bustypes as $typeid => $typetitle)
             <tr>
                 <td>{{ $typetitle }}</td>
-                <td class="p0"><input type="number" class="form-control" name="diesel[{{$typeid}}]"></td>
+                <td class="p0"><input type="number" class="form-control" name="diesel[{{$typeid}}]" value="{{ $diesel[$typeid] ?? '' }}"></td>
             </tr>
             @empty
             @endforelse

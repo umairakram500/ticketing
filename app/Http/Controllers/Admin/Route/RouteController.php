@@ -63,7 +63,7 @@ class RouteController extends Controller
         $route->fare = $request->fare;
         $route->status = $request->status;
         $route->kms = $request->kms;
-        $route->diesel = $request->diesel;
+        //$route->diesel = $request->diesel;
 
         $stops = $request->stops;
 
@@ -78,6 +78,7 @@ class RouteController extends Controller
         if($route->save()){
             $this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);
             //$this->saveFares($request->fares, $route);
+            $this->saveDiesel($request->diesels, $route);
             Session::flash('flash_success', 'Route addedd successfully.');
             return redirect()->route('admin.route.index');
         } else {
@@ -105,9 +106,11 @@ class RouteController extends Controller
      */
     public function edit(Route $route)
     {
+        //dd(RouteDiesel::All());
         $data['route'] = $route;
         $data['luxuries'] = $this->toSelect(LuxuryType::Options());
         $data['fares'] = $this->toSelect(Fare::where('route_id', $route->id)->Options(), 'fare');
+        $data['diesel'] = $route->diesels->pluck('litres', 'bustype_id')->toArray();
 
         return view("admin.route.edit", $data);
     }
@@ -121,6 +124,7 @@ class RouteController extends Controller
      */
     public function update(RouteRequest $request, Route $route)
     {
+        $this->saveDiesel($route, $request->diesel);
         $route->title = $request->title;
         $route->from_city_id = $request->from_city_id;
         $route->to_city_id = $request->to_city_id;
@@ -129,7 +133,7 @@ class RouteController extends Controller
         $route->fare = $request->fare;
         $route->status = $request->status;
         $route->kms = $request->kms;
-        $route->diesel = $request->diesel;
+        //$route->diesel = $request->diesel;
         //$route->travel_time = $request->hrs.":".$request->mins;
         //$route->stations = json_encode($request->stations) ;
         //$route->kms = $request->kms;
@@ -219,12 +223,11 @@ class RouteController extends Controller
 
     private function saveDiesel($route, $diesels)
     {
-
         if(is_array($diesels) && count($diesels)) {
             foreach ($diesels as $bustype => $litres) {
-                $fare = RouteDiesel::updateOrCreate(
+                RouteDiesel::updateOrCreate(
                     ['route_id' => $route->id, 'bustype_id' => $bustype],
-                    ['littres' => $litres]
+                    ['litres' => $litres]
                 );
             }
         }
