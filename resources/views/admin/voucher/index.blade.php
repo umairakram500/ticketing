@@ -51,10 +51,3 @@
     </div>
 
 @endsection
-
-@push('buttons')
-<li>
-    <a href="{{ route('admin.city.create') }}" class="btn btn-success"><i class="icon-plus"></i>add City</a>
-</li>
-@endpush
-
