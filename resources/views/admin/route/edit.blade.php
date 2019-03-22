@@ -4,7 +4,6 @@
 @section('sub-title', 'Route Management')
 @section('content')
     @if ($errors->any())
-
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -24,7 +23,6 @@
 
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -32,11 +30,5 @@
 
 @push('buttons')
 
-<li>
-    <a href="{{ route('admin.route.stopover.index', $route->id) }}" class="btn btn-info"><span class="fa fa-plus-circle"></span> Stopovers</a>
-</li>
-{{--<li>
-    <a href="#" class="btn btn-success"><span class="fa fa-plus-circle"></span> Schedules</a>
-</li>--}}
 
 @endpush
