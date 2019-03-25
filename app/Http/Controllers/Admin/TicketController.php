@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class TicketController extends Controller
 {
@@ -330,13 +331,18 @@ class TicketController extends Controller
 
         $ticket = Ticket::find($ticket);
         if ($ticket != null) {
-            $data['error'] = false;
-            $data['ticket'] = $ticket;
-            $data['deduction'] = $this->refundDetection($ticket);
-            $ticket->seats()->delete();
-            $ticket->status = 0;
-            $ticket->save();
-            $ticket->delete();
+            if($ticket->from_stop != Auth::user()->terminal_id){
+                $data = array('error' => 1, 'msg' => 'You are not abble to cancel this Ticket because this ticket not related to your teminal booking.');
+            } else {
+                $data['error'] = false;
+                $data['ticket'] = $ticket;
+                $data['deduction'] = $this->refundDetection($ticket);
+                $ticket->seats()->delete();
+                $ticket->status = 0;
+                $ticket->save();
+                $ticket->delete();
+            }
+
         } else
             $data = array('error' => 1, 'msg' => 'Ticket Not found');
 

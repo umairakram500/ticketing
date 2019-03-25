@@ -34,18 +34,32 @@ if($oldDiesel != null)
 <div class="row gutter">
     <div class="col-md-6 col-sm-12">
         <div class="form-group">
-            <?php $terminals = \App\Models\Terminal::Selection() ?>
+            <?php $terminals = \App\Models\Terminal::where('status', 1)->get(); ?>
             {{ Form::label('from_terminal_id', 'Inital Terminal *') }}
-            {{ Form::select('from_terminal_id', $terminals, null, ['class' => 'form-control'])}}
+            {{--{{ Form::select('from_terminal_id', $terminals, null, ['class' => 'form-control'])}}--}}
+                <select name="from_terminal_id" id="from_terminal_id" class="form-control">
+                    @forelse($terminals as $terminal)
+                        <option data-city="{{ $terminal->city_id }}" value="{{ $terminal->id }}">{{ $terminal->title }}</option>
+                    @empty
+                    @endforelse
+                </select>
         </div><!--form-group-->
     </div>
     <div class="col-md-6 col-sm-12">
         <div class="form-group">
             {{ Form::label('to_terminal_id', 'Last Terminal *') }}
-            {{ Form::select('to_terminal_id', $terminals, null, ['class' => 'form-control'])}}
+            {{-- {{ Form::select('to_terminal_id', $terminals, null, ['class' => 'form-control'])}} --}}
+            <select name="to_terminal_id" id="to_terminal_id" class="form-control">
+                @forelse($terminals as $terminal)
+                    <option data-city="{{ $terminal->city_id }}" value="{{ $terminal->id }}">{{$terminal->title}}</option>
+                @empty
+                @endforelse
+            </select>
         </div><!--form-group-->
     </div>
 </div>
+
+<?php $terminals = $terminals->pluck('title', 'id') ?>
 
 <div class="row gutter">
     <div class="col-md-6">
@@ -167,9 +181,17 @@ if($oldDiesel != null)
                     $select_stops = Form::select('stops[]', $terminals, null, ['class'=>'form-control', 'placeholder'=>'- Select Stop -', 'required'])
                     ?>
                     var exp_row = '<tr><td></td><td>{{ $select_stops }}</td><td><span class="btn btn-primary re_row"><span class="fa fa-times"></span></span></td></tr>';
-
             $('#stopslist').append(exp_row);
         });
+
+        $('#from_city_id').on('change', function(){
+            var from_city = $(this, 'option:selected').val();
+            $('#from_terminal_id option[data-city="'+from_city+'"]')[0].attr('selected', 'selected');
+            //$('#from_terminal_id option').hide();
+            //$('#from_terminal_id option[data-city="'+from_city+'"]').show();
+
+        });
+
     })
 </script>
 @endpush

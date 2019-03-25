@@ -262,7 +262,7 @@ if($routeID > 0){
                         <div class="col-md-4">
                             <div class="form-group">
                                 <button class="btn btn-danger btn-block py-3" type="button"
-                                        onclick="cancelTicket('{{ route('admin.ticket.cancel') }}')">Cancel Ticket</button>
+                                        onclick="cancelTicket('{{ route('admin.ticket.cancel') }}')">Refund Ticket</button>
                             </div>
                         </div>
                         <div class="col-md-4">
