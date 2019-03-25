@@ -385,9 +385,9 @@ class TicketController extends Controller
         $schedule = $req->schedule;
         $bookingdate = $req->bookingdate;
 
-        $tickets = Ticket::where('schedule_id', $schedule)->whereDate('booking_for', $bookingdate);
+        $tickets = Ticket::where([['schedule_id', $schedule],['from_stop', Auth::user()->terminal_id]])->whereDate('booking_for', $bookingdate);
         $seats = TicketSeat::whereHas('ticket', function ($query) use ($schedule, $bookingdate) {
-            return $query->where('schedule_id', $schedule)->whereDate('booking_for', $bookingdate);
+            return $query->where([['schedule_id', $schedule],[['from_stop', Auth::user()->terminal_id]]])->whereDate('booking_for', $bookingdate);
         });
 
         $seats->delete();
