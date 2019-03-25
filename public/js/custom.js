@@ -388,11 +388,12 @@ function cancelTicket(url)
 				var discount = parseFloat(res.ticket.discount != null ? res.ticket.discount : 0);
 				var deduction = parseFloat(res.deduction);
 				var refund = fare - discount - deduction;
-
 				var msg = 'Customer Name : ' + res.ticket.p_name + '\n';
 				msg += 'Amount : ' + (fare - discount) +'\n';
 				msg += 'Deduction : ' + deduction +'\n';
 				msg += 'Refund : ' + refund;
+
+
 				alert(msg);
 			}
 

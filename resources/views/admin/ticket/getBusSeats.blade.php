@@ -8,8 +8,10 @@
     ?>
     @for($i=1; $i<=$total_seats; $i++)
         @if(isset($seats[$i]))
-            <span class="booked icon-{{ $seats[$i] == 'M' ? 'man' : 'woman' }} paid_{{ $paid[$i] }}"><span>{{ $i
-                            }}</span></span>
+            <span class="booked icon-{{$seats[$i]=='M'?'man':'woman'}} paid_{{$paid[$i]}}" onclick="getTicketInfo('{{$i}}')">
+                <span>{{$i}}</span>
+                <input type="checkbox" data-seat="{{$i}}" value="{{$seats[$i]}}" class="seats seat-{{ $i }} hidden" name="seat[{{ $i }}]">
+            </span>
         @else
             <span onclick="seatSelect({{ $i }})" class="seat_{{$i}}">{{ $i }}
                 @if(isset($old[$i]))

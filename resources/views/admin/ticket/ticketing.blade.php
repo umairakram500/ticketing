@@ -76,7 +76,7 @@ if($routeID > 0){
                 {{ Form::select('to_stop', $stopsList, $to_stop, ['class' => 'form-control', 'placeholder'=>'- Select Stop -', 'required'])}}
             </div><!--form-group-->
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 hidden">
             <div class="form-group mt-5">
                 {{ Form::button('Get Schedules', ['class' => 'btn btn-info', 'type'=>'button', 'id'=>'getSchedules'])}}
             </div><!--form-group-->
@@ -184,8 +184,10 @@ if($routeID > 0){
                     ?>
                     @for($i=1; $i<=$total_seats; $i++)
                         @if(isset($seats[$i]))
-                            <span class="booked icon-{{ $seats[$i] == 'M' ? 'man' : 'woman' }} paid_{{ $btypes[$i]}}"><span>{{ $i
-                            }}</span></span>
+                            <span class="booked icon-{{$seats[$i]=='M'?'man':'woman'}} paid_{{$btypes[$i]}}" onclick="getTicketInfo('{{ $i }}')">
+                                <span>{{$i}}</span>
+                                <input type="checkbox" data-seat="{{$i}}" value="{{$seats[$i]}}" class="seats seat-{{ $i }} hidden" name="seat[{{ $i }}]">
+                            </span>
                         @else
                             <span onclick="seatSelect({{ $i }})" class="seat_{{$i}}">{{ $i }}
                                 @if(isset($old[$i]))

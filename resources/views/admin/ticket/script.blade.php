@@ -245,6 +245,7 @@ console.log('asdf');
                             .prop('selected', true)
                             .prop('readonly', true);*/
                     $('#to_stop option[value="'+res.to+'"]').prop('selected', true);
+                    $('#getSchedules').click();
                 }
             });
         }
@@ -263,11 +264,30 @@ console.log('asdf');
             alert('Select booking date');
             return false;
         }
-
         var url = '{{ url('admin/ticket') }}/'+listof+'/'+schedule+'/'+bookingdate;
-
-
         window.open( url, '_blank');
+    }
+
+    function getTicketInfo(id){
+        console.log(id);
+        if(!$('.seats.seat-'+id).is(':checked'))
+        {
+            $('.seats.seat-'+id).prop('checked', true);
+            /*$.ajax({
+                url: '',
+                data: {},
+                type: 'GET',
+                success: function(result){
+                    console.log(result);
+                }
+            })*/
+        }
+        else {
+            $('.seats.seat-'+id).prop('checked', false);
+        }
+
+        setSeat();
+
     }
 
 

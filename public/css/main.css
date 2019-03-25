@@ -5404,3 +5404,6 @@ span.bk.gb.gbl, span.booked.icon-man.paid_1 {
 .bk.lb.lbm, span.booked.icon-man.paid_0 {
     background-color: #f94c6b !important;
 }
+.icons.seats span.booked.paid_0:hover {
+    cursor: pointer !important;
+}

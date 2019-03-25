@@ -24,6 +24,7 @@ class TicketController extends Controller
         $ticket->from_city_id = Terminal::find($req->from_stop)->city_id;
         $ticket->to_city_id = Terminal::find($req->to_stop)->city_id;
         $ticket->btype_id = 6;
+        $ticket->booking_for = Date('Y-m-d');
 
         $ticket->save();
 

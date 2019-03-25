@@ -70,7 +70,7 @@ if($routeID > 0){
                 {{ Form::select('to_stop', $stopsList, $to_stop, ['class' => 'form-control', 'placeholder'=>'- Select Stop -', 'required'])}}
             </div><!--form-group-->
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 hidden">
             <div class="form-group mt-5">
                 {{ Form::button('Get Schedules', ['class' => 'btn btn-info', 'type'=>'button', 'id'=>'getSchedules'])}}
             </div><!--form-group-->
@@ -111,9 +111,9 @@ if($routeID > 0){
                             <th>BusType</th>
                             <th>Seats</th>
                             {{--<th>Fare</th>--}}
-                            <th>Res</th>
+                            {{--<th>Res</th>
                             <th>Deli</th>
-                            <th>Avai</th>
+                            <th>Avai</th>--}}
                             <th>Open</th>
                             <th>Status</th>
                         </tr>
@@ -279,7 +279,6 @@ if($routeID > 0){
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="col-md-3">
