@@ -51,3 +51,11 @@
     </div>
 
 @endsection
+
+
+@push('buttons')
+<li>
+    <a href="{{ route('admin.voucher.create') }}" class="btn btn-success"><i class="icon-plus"></i>add Voucher</a>
+</li>
+@endpush
+

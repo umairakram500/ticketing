@@ -20,6 +20,7 @@ $scheduleType = array(
                         <thead>
                         <tr>
                             <th width="50">#</th>
+                            <th>Depart Time</th>
                             <th>Schedule Type</th>
                             <th>Route</th>
                             <th>Bus Type</th>
@@ -30,6 +31,7 @@ $scheduleType = array(
                         @forelse($schedules as $key => $schedule)
                             <tr>
                                 <td>{{ $key+1 }}</td>
+                                <td>{{ $schedule->depart_time }}</td>
                                 <td>{{ $scheduleType[$schedule->type] }}</td>
                                 <td>{{ $schedule->route->title ?? '' }}</td>
                                 <td>{{ $schedule->luxuryType->title ?? '' }}</td>
