@@ -20,6 +20,8 @@
                             <th width="140">CNIC</th>
                             <th>Qty*</th>
                             <th>Seats</th>
+                            <th>Fare</th>
+                            <th>Depart</th>
                             <th>Destination</th>
                             <th>Booked at</th>
                             <th>Status</th>
@@ -35,6 +37,8 @@
                                 <td>{{ $ticket->p_cnic }}</td>
                                 <td>{{ $ticket->total_seats }}</td>
                                 <td>{{ str_replace(',', ', ', $ticket->seat_numbers) }}</td>
+                                <td>{{ $ticket->total_fare }}</td>
+                                <td>{{ $ticket->fromStop->title ?? '' }}</td>
                                 <td>{{ $ticket->toStop->title ?? '' }}</td>
                                 <td>{{ date('M d, Y h:m A', strtotime($ticket->created_at)) }}</td>
                                 <td>{{ $ticket->paid ? 'Paid' : 'Not Paid' }}</td>

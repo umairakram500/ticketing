@@ -82,6 +82,11 @@ if($routeID > 0){
             </div><!--form-group-->
         </div>
 
+        <div class="col-md-3 col-md-offset-1 text-center">
+            <h3 id="selected-route" class="mb-2 mt-3" >Route</h3>
+            <h3 id="selected-schedule">Schedule</h3>
+        </div>
+
     </div>
 
     {{-- Legents --}}
