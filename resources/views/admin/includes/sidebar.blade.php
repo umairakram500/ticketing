@@ -96,12 +96,12 @@
                 <li>
                     <a href="{{ route('admin.ticket.booking') }}"
                        class="{{request()->is('admin/ticket/booking')?'current':''}}">
-                        Book</a>
+                        Booking</a>
                 </li>
                 <li>
                     <a href="{{ route('admin.ticket.ticketing') }}"
                        class="{{request()->is('admin/ticket/ticketing')?'current':''}}">
-                        Issue</a>
+                        Ticketing</a>
                 </li>
             </ul>
         </li>

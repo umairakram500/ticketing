@@ -46,68 +46,68 @@ if($routeID > 0){
 
     {{-- Search Schedues --}}
     <div class="row gutter">
+            <div class="col-md-9">
+                <div class="row gutter">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            {{ Form::label('booking_date', 'Booking Date') }}
+                            {{ Form::text('booking_date',  old('booking_date', date('Y-m-d')), ['class' => 'form-control', 'id'=>'bookingdate', 'readonly'])}}
+                        </div><!--form-group-->
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <?php $route = \App\Models\Route\Route::where('to_terminal_id', '!=', $user_terminal->id)
+                                    ->whereHas('stops', function($query){
+                                        return $query->where('terminal_id', Auth::user()->terminal_id);
+                                    })->selection();
+                            ?>
+                            {{ Form::label('route', 'Route') }}
+                            {{ Form::select('route', $route, $routeID, ['class' => 'form-control', 'placeholder'=>'- Select Route-', 'required'])}}
+                        </div><!--form-group-->
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{ Form::label('from_stop', 'Departure') }}
+                            {{ Form::select('from_stop', array($user_terminal->id=>$user_terminal->title), $from_stop, ['class' => 'form-control', 'required'])}}
+                        </div><!--form-group-->
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            {{ Form::label('to_stop', 'Arrival') }}
+                            {{ Form::select('to_stop', $stopsList, $to_stop, ['class' => 'form-control', 'required'])}}
+                        </div><!--form-group-->
+                    </div>
+                    <div class="hidden">
+                        <div class="form-group mt-5">
+                            {{ Form::button('Get Schedules', ['class' => 'btn btn-info', 'type'=>'button', 'id'=>'getSchedules'])}}
+                        </div><!--form-group-->
+                    </div>
+                    <div class="col-sm-12 legneds pb-4">
+                        <table class="legends">
+                            <tr>
+                                <td><span class="bk lb lbm"></span></td>
+                                <td>Male Booked</td>
+                                <td><span class="bk lb"></span></td>
+                                <td>Female Booked</td>
+                                <td><span class="bk gb gbl"></span></td>
+                                <td>Make Ticket</td>
+                                <td><span class="bk gb"></span></td>
+                                <td>Female Ticket</td>
+                                <td><span class="bk va"></span></td>
+                                <td>Vaccant</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <h3 id="selected-route" class="mb-2 mt-3" >Route</h3>
+                <h3 id="selected-schedule">Schedule</h3>
+            </div>
+        </div>
 
-        <div class="col-md-2">
-            <div class="form-group">
-                {{ Form::label('booking_date', 'Booking Date') }}
-                {{ Form::text('booking_date',  old('booking_date', date('Y-m-d')), ['class' => 'form-control', 'id'=>'bookingdate', 'readonly'])}}
-            </div><!--form-group-->
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <?php $route = \App\Models\Route\Route::where('to_terminal_id', '!=', $user_terminal->id)
-                        ->whereHas('stops', function($query){
-                            return $query->where('terminal_id', Auth::user()->terminal_id);
-                        })->selection();
-                ?>
-                {{ Form::label('route', 'Route') }}
-                {{ Form::select('route', $route, $routeID, ['class' => 'form-control', 'placeholder'=>'- Select Route -', 'required'])}}
-            </div><!--form-group-->
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                {{ Form::label('from_stop', 'Departure') }}
-                {{ Form::select('from_stop', array($user_terminal->id=>$user_terminal->title), $from_stop, ['class' => 'form-control', 'placeholder'=>'- Select Stop -', 'required'])}}
-            </div><!--form-group-->
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                {{ Form::label('to_stop', 'Arrival') }}
-                {{ Form::select('to_stop', $stopsList, $to_stop, ['class' => 'form-control', 'placeholder'=>'- Select Stop -', 'required'])}}
-            </div><!--form-group-->
-        </div>
-        <div class="col-md-3 hidden">
-            <div class="form-group mt-5">
-                {{ Form::button('Get Schedules', ['class' => 'btn btn-info', 'type'=>'button', 'id'=>'getSchedules'])}}
-            </div><!--form-group-->
-        </div>
 
-        <div class="col-md-3 col-md-offset-1 text-center">
-            <h3 id="selected-route" class="mb-2 mt-3" >Route</h3>
-            <h3 id="selected-schedule">Schedule</h3>
-        </div>
 
-    </div>
-
-    {{-- Legents --}}
-    <div class="row">
-        <div class="col-sm-12 legneds pb-4">
-            <table class="legends">
-                <tr>
-                    <td><span class="bk lb lbm"></span></td>
-                    <td>Reserved</td>
-                    <td><span class="bk lb"></span></td>
-                    <td>Reserved</td>
-                    <td><span class="bk gb gbl"></span></td>
-                    <td>Gents Issued</td>
-                    <td><span class="bk gb"></span></td>
-                    <td>Ladies Issued</td>
-                    <td><span class="bk va"></span></td>
-                    <td>Vaccant</td>
-                </tr>
-            </table>
-        </div>
-    </div>
 
     {{-- Schedules & seats --}}
     <div class="row gutter">
@@ -133,7 +133,7 @@ if($routeID > 0){
                     <tbody id="schedules">
                     <?php $schedules = old('schedules'); ?>
                     @if($routeID > 0)
-                        <?php $schedules = \App\Models\Schedule::where('route_id', $routeID)->get(); ?>
+                        <?php $schedules = \App\Models\Schedule::where('route_id', $routeID)->orderByRaw('CAST(depart_time as time) ASC')->get(); ?>
                         @include('admin.ticket.getSchedules', $schedules);
                     @else
                         <tr>
