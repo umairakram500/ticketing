@@ -403,14 +403,14 @@ class TicketController extends Controller
 
     public function booklist(Request $req)
     {
-        $data['tickets'] = Ticket::where([['schedule_id', $req->schedule], ['paid', 0]])->whereDate('booking_for', $req->bookingdate)->get();
+        $data['tickets'] = Ticket::where([['schedule_id', $req->schedule], ['paid', 0], ['terminal_id', Auth::user()->terminal_id]])->whereDate('booking_for', $req->bookingdate)->get();
         $data['title'] = 'Ticket Booking List';
         return view('admin.ticket.list', $data);
     }
 
     public function issuelist(Request $req)
     {
-        $data['tickets'] = Ticket::where([['schedule_id', $req->schedule], ['paid', 1]])->whereDate('booking_for', $req->bookingdate)->get();
+        $data['tickets'] = Ticket::where([['schedule_id', $req->schedule], ['paid', 1], ['terminal_id', Auth::user()->terminal_id]])->whereDate('booking_for', $req->bookingdate)->get();
         $data['title'] = 'Ticket Issue List';
         return view('admin.ticket.list', $data);
     }

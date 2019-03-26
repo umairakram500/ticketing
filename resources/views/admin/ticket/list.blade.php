@@ -45,7 +45,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">Not yet Ticket booked</td>
+                                <td colspan="10" class="text-center">Not yet Ticket booked</td>
                             </tr>
                         @endforelse
                         </tbody>
