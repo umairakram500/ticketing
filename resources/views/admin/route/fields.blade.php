@@ -39,7 +39,14 @@ if($oldDiesel != null)
             {{--{{ Form::select('from_terminal_id', $terminals, null, ['class' => 'form-control'])}}--}}
                 <select name="from_terminal_id" id="from_terminal_id" class="form-control">
                     @forelse($terminals as $terminal)
-                        <option data-city="{{ $terminal->city_id }}" value="{{ $terminal->id }}">{{ $terminal->title }}</option>
+                        <?php
+                            $sel = '';
+                            if(isset($route)){
+                                $from_terminal = old('from_terminal_id', $route->from_terminal_id);
+                                $sel = $terminal->id == $from_terminal ? 'selected' : '';
+                            }
+                        ?>
+                        <option data-city="{{ $terminal->city_id }}" value="{{ $terminal->id }}" {{ $sel }}>{{ $terminal->title }}</option>
                     @empty
                     @endforelse
                 </select>
@@ -51,7 +58,14 @@ if($oldDiesel != null)
             {{-- {{ Form::select('to_terminal_id', $terminals, null, ['class' => 'form-control'])}} --}}
             <select name="to_terminal_id" id="to_terminal_id" class="form-control">
                 @forelse($terminals as $terminal)
-                    <option data-city="{{ $terminal->city_id }}" value="{{ $terminal->id }}">{{$terminal->title}}</option>
+                    <?php
+                        $sel = '';
+                        if(isset($route)){
+                            $from_terminal = old('to_terminal_id', $route->to_terminal_id);
+                            $sel = $terminal->id == $from_terminal ? 'selected' : '';
+                        }
+                    ?>
+                    <option data-city="{{ $terminal->city_id }}" value="{{ $terminal->id }}" {{$sel}}>{{$terminal->title}}</option>
                 @empty
                 @endforelse
             </select>
@@ -116,8 +130,8 @@ if($oldDiesel != null)
             </div>
             <div class="col-xs-4">
                 <div class="form-group">
-                    {{ Form::label('act_kms', 'KM\'s From G-Boos') }}
-                    {{ Form::number('act_kms', null, ['class' => 'form-control'])}}
+                    {{ Form::label('act_kms', 'KM\'s From G-BOS') }}
+                    {{ Form::number('act_kms', null, ['class' => 'form-control', 'readonly'])}}
                 </div><!--form-group-->
             </div>
             {{--<div class="col-xs-4">

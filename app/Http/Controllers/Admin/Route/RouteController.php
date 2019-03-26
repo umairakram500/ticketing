@@ -66,15 +66,6 @@ class RouteController extends Controller
         $route->kms = $request->kms;
         //$route->diesel = $request->diesel;
 
-        $stops = $request->stops;
-
-        if(current($stops) !== $request->from_terminal_id){
-            array_unshift($stops, $request->from_terminal_id);
-        }
-        if(end($stops) !== $request->to_terminal_id){
-            $stops[] =  $request->to_terminal_id;
-        }
-
 
         if($route->save()){
             $this->saveStops($request->stops, $route, $route->from_terminal_id, $route->to_terminal_id);

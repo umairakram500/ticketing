@@ -75,18 +75,22 @@ if($routeID > 0){
                 {{ Form::button('Get Schedules', ['class' => 'btn btn-info', 'type'=>'button', 'id'=>'getSchedules'])}}
             </div><!--form-group-->
         </div>
+        <div class="col-md-3 col-md-offset-1 text-center">
+            <h3 id="selected-route" class="mb-2 mt-3" >Route</h3>
+            <h3 id="selected-schedule">Schedule</h3>
+        </div>
 
         <div class="col-sm-12 legneds pb-4">
             <table class="legends">
                 <tr>
                     <td><span class="bk lb lbm"></span></td>
-                    <td>Gents Reserved</td>
+                    <td>Male Booked</td>
                     <td><span class="bk lb"></span></td>
-                    <td>Ladies Reserved</td>
+                    <td>Female Booked</td>
                     <td><span class="bk gb gbl"></span></td>
-                    <td>Gents Issued</td>
+                    <td>Male Issued</td>
                     <td><span class="bk gb"></span></td>
-                    <td>Ladies Issued</td>
+                    <td>Female Issued</td>
                     <td><span class="bk va"></span></td>
                     <td>Vaccant</td>
                 </tr>

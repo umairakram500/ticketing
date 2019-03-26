@@ -77,7 +77,6 @@ class ScheduleController extends Controller
         $schedule = new Schedule();
         $stops = $request->stops;
         $depart_time = current($stops);
-        //$last_stop = end($stops);
         $arrival_time = end($stops);
 
         $schedule->route_id = $request->route_id;
@@ -110,8 +109,8 @@ class ScheduleController extends Controller
                     'terminal_id'=>$id,
                     'schedule_id'=>$schedule->id,
                     'route_id'=>$schedule->route_id,
-                    'depart'=> $stop['depart'] != '' ? date('H:i:s', strtotime($stop['depart'])) : null,
-                    'arrive'=> $stop['arrive'] != '' ? date('H:i:s', strtotime($stop['arrive'])) : null
+                    'depart'=> isset($stop['depart'])&&$stop['depart']!='' ? date('H:i:s',strtotime($stop['depart'])) : null,
+                    'arrive'=> isset($stop['arrive'])&&$stop['arrive']!='' ? date('H:i:s', strtotime($stop['arrive'])) : null
                 );
             }
             ScheduleStop::insert($stopslist);
@@ -160,7 +159,7 @@ class ScheduleController extends Controller
 
         $stops = $request->stops;
         $depart_time = current($stops);
-        $arrival_time = $stops[count($stops)-1];
+        $arrival_time = end($stops);
 
         $schedule->route_id = $request->route_id;
         $schedule->luxury_type = $request->luxury_type;

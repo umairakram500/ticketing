@@ -393,7 +393,6 @@ function cancelTicket(url)
 				msg += 'Deduction : ' + deduction +'\n';
 				msg += 'Refund : ' + refund;
 
-
 				alert(msg);
 			}
 

@@ -5369,10 +5369,10 @@ td.has-error .form-control {
     margin-right: 5px;
 }
 .lb, .booked.icon-woman.btype_t, .booked.paid_0 {
-    background-color: #F1B4BF !important;
+    background-color: #05bb05 !important;
 }
 .gb, .booked.icon-man.btype_t, .booked.paid_1 {
-    background-color: #76AD22 !important;
+    background-color: #ffc0cb !important;
 }
 .lo, .booked.icon-woman.btype_o {
     background-color: #145d42 !important;
@@ -5399,10 +5399,10 @@ td.has-error .form-control {
     color: #ffffff;
 }
 span.bk.gb.gbl, span.booked.icon-man.paid_1 {
-    background-color: #3c6302 !important;
+    background-color: #0000ff !important;
 }
 .bk.lb.lbm, span.booked.icon-man.paid_0 {
-    background-color: #f94c6b !important;
+    background-color: #025202 !important;
 }
 .icons.seats span.booked.paid_0:hover {
     cursor: pointer !important;

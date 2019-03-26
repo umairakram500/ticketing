@@ -87,7 +87,7 @@
         $oldStop = old('stops', isset($schedule_stops)? $schedule_stops : null);
 
         //if($stops_json != null && count($oldStop)){
-            foreach($stop_ids as $sid){
+            foreach($stop_ids as $k => $sid){
                 //$stop = array_search($sid, array_search('id',$stops))
     ?>
         <div class="row gutter">
@@ -97,18 +97,26 @@
                     {{--<input type="hidden" name="stops[{{ $sid }}][name]" value="{{ $stopname }}">--}}
                 </div><!--form-group-->
             </div>
-            <div class="col-md-4 col-sm-12">
-                <div class="form-group">
-                    <label>Departure</label>
-                    <input type="text" class="form-control depart"  name="stops[{{ $sid }}][depart]" value="{{ $oldStop[$sid]['depart']??'' }}">
-                </div><!--form-group-->
-            </div>
+            @if($k !=0)
             <div class="col-md-4 col-sm-12">
                 <div class="form-group">
                     <label>Arrival</label>
                     <input type="text" class="form-control arrive" name="stops[{{ $sid }}][arrive]" value="{{ $oldStop[$sid]['arrive']??'' }}">
                 </div><!--form-group-->
             </div>
+            @endif
+
+            @if($k+1 != count($stops))
+            <div class="col-md-4 col-sm-12">
+                <div class="form-group">
+                    <label>Departure</label>
+                    <input type="text" class="form-control depart"  name="stops[{{ $sid }}][depart]" value="{{ $oldStop[$sid]['depart']??'' }}">
+                </div><!--form-group-->
+            </div>
+            @endif
+
+
+
         </div>
     <?php
             }
@@ -191,7 +199,7 @@
             dateFromToSetting(schtype)
         });
 
-        $('#stops .row:last-child input').attr('disabled', true);
+        //$('#stops .row:last-child input').attr('disabled', true);
     });
 
     function dateFromToSetting(type)
@@ -210,16 +218,28 @@
     {
         if(Object.keys(stops).length > 0){
             //var stopIds = reverse ? Object.keys(stops).reverse() : Object.keys(stops);
+            //console.log(stops);
             for (var id in stops) {
-                appendStop(stops[id].id, stops[id].title);
+                console.log((id+1) == stops.length, (id+1), stops.length);
+                var row = (parseInt(id)+1) == stops.length ? 'last' : id;
+                appendStop(stops[id].id, stops[id].title, row);
             }
             // $('#stops .row:last-child input').attr('readonly', true);
             $('.depart, .arrive').timepicker({ 'step': 15, 'timeFormat': 'g:i a' });
         }
     }
-    function appendStop(id, title)
+    function appendStop(id, title, row)
     {
-        var stop = '<div class="row gutter"><div class="col-md-4 col-sm-12"><div class="form-group"><h4 class="mt-5 text-muted">'+title+'</h4> <input type="hidden" name="stops['+id+'][name]" value="'+title+'"></div></div><div class="col-md-4 col-sm-12"><div class="form-group"> <label>Departure</label> <input type="text" class="form-control depart" name="stops['+id+'][depart]" required></div></div><div class="col-md-4 col-sm-12"><div class="form-group"> <label>Arrival</label> <input type="text" class="form-control arrive" name="stops['+id+'][arrive]" required></div></div></div>';
+        var stop = '<div class="row gutter"><div class="col-md-4 col-sm-12"><div class="form-group"><h4 class="mt-5 text-muted">'+title+'</h4> <input type="hidden" name="stops['+id+'][name]" value="'+title+'"></div></div>';
+
+        if(row != 0)
+        stop += '<div class="col-md-4 col-sm-12"><div class="form-group"> <label>Arrival</label> <input type="text" class="form-control arrive" name="stops['+id+'][arrive]" required></div></div>';
+
+        if(row != 'last')
+        stop += '<div class="col-md-4 col-sm-12"><div class="form-group"> <label>Departure</label> <input type="text" class="form-control depart" name="stops['+id+'][depart]" required></div></div>';
+
+
+        stop +='</div>';
 
         $('#stops').append(stop);
     }

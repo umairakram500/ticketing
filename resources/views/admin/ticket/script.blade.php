@@ -27,7 +27,7 @@ console.log('asdf');
     $(document).ready(function(){
 
         $('#bookingdate').datepicker({
-            //minDate: 0,
+            minDate: 0,
             maxDate: "+1m",
             dateFormat: "yy-mm-dd"
         });
@@ -35,29 +35,13 @@ console.log('asdf');
         $('#route').select2();
 
         $('#total_seats, #disfare, #fare').on('keyup change', function(){
-           /* var fare = $('#fare').val();
-            if($('#disfare').length)
-                fare = $('#disfare').val();
-            var seats = $(this).val();
-            var discount = $('#discount').val();
-            $('#total_fare').text(seats*fare);
-            $('#payable_fare').text((seats*fare)-discount);*/
             fareCalculate();
         });
         $('#discount').on('keyup change',function(){
-            /*var fare = $('#fare').val();
-            if($('#disfare').length)
-                fare = $('#disfare').val();
-            var seats = $('#total_seats').val();
-            var discount = $('#discount').val();
-            // console.log(seats, fare);
-            $('#payable_fare').text((seats*fare)-discount);*/
             fareCalculate();
         });
         $('#amount_paid').on('keyup change',function(){
             var fare = $('#fare').val();
-            /*if($('#disfare').length)
-                fare = $('#disfare').val();*/
             var recived = $(this).val();
             var seats = $('#total_seats').val();
             var discount = $('#discount').val();
@@ -75,11 +59,7 @@ console.log('asdf');
                 $('.cu.alert.error').show();
             }
             else {
-                //$('.alert.loading').show();
-                //$('input[name="seat_numbers"]').focus();
                 $.get('{{ url('admin/getCustomerInfo')}}/'+cnic, function(res){
-                    //console.log(res);
-                    //$('.cu.alert').hide();
                     if(res.error != undefined){
                         //$('.alert.new').show();
                         $('input[name="p_name"]').focus();
@@ -97,9 +77,6 @@ console.log('asdf');
             $('.bus_wrpr .overly').show();
             var route = $('#route option:selected').val();
             var bookdate = $('#bookingdate').val();
-            /*$.map(formdata, function(n, i){
-                data[n['name']] = n['value'];
-            });*/
             if(route == '' || route == undefined){
                 alert('Route not selected');
                 return false;
@@ -125,6 +102,10 @@ console.log('asdf');
             $(this).siblings().removeClass('active');
             $(this).addClass('active');
             var type = $(this).data('type');
+            var schedule = $(this).find('td:nth-child(2)').text();
+            var route = $(this).find('td:nth-child(3)').text();
+            $('#selected-schedule').text(schedule);
+            $('#selected-route').text(route);
             stopovers = fares.hasOwnProperty(type) ? fares[type] : {};
             getfare();
             getBusSeats(this, busSeatsURI);

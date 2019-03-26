@@ -15,61 +15,18 @@ Trait CommenFunctions
     function getCombinations($base, $n = 0)
     {
 
-        /*$baselen = count($base);
-        if ($baselen == 0) {
-            return;
-        }
-        if ($n == 1) {
-            $return = array();
-            foreach ($base as $b) {
-                $return[] = array($b);
-            }
-            return $return;
-        } else {
-            //get one level lower combinations
-            $oneLevelLower = $this->getCombinations($base, $n - 1);
-
-            //for every one level lower combinations add one element to them that the last element of a combination is preceeded by the element which follows it in base array if there is none, does not add
-            $newCombs = array();
-
-            foreach ($oneLevelLower as $oll) {
-
-                $lastEl = $oll[$n - 2];
-                $found = false;
-                foreach ($base as $key => $b) {
-                    if ($b == $lastEl) {
-                        $found = true;
-                        continue;
-                        //last element found
-
-                    }
-                    if ($found == true) {
-                        //add to combinations with last element
-                        if ($key < $baselen) {
-
-                            $tmp = $oll;
-                            $newCombination = array_slice($tmp, 0);
-                            $newCombination[] = $b;
-                            $newCombs[] = array_slice($newCombination, 0);
-                        }
-
-                    }
-                }
-
-            }
-
-        }
-
-        return $newCombs;*/
-
         $newCombs = array();
-
+        //dd($base);
         if(count($base)){
-            foreach($base as $i){
-                foreach($base as $d){
+            foreach($base as $ik => $i){
+                for($d=$ik; $d<count($base); $d++){
+                    if($i != $base[$d])
+                        $newCombs[] = array($i, $base[$d]);
+                }
+                /*foreach($base as $dk => $d){
                     if($i != $d)
                         $newCombs[] = array($i, $d);
-                }
+                }*/
             }
         }
 

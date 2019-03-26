@@ -279,7 +279,7 @@ class TicketController extends Controller
     {
 
         $data['bookingdate'] = $req->bookingdate;
-        $data['schedules'] = Schedule::where('route_id', $req->route)->get();
+        $data['schedules'] = Schedule::where('route_id', $req->route)->orderByRaw('CAST(depart_time as time) ASC')->get();
         return view('admin.ticket.getSchedules', $data);
     }
 
