@@ -60,12 +60,14 @@ console.log('asdf');
             }
             else {
                 $.get('{{ url('admin/getCustomerInfo')}}/'+cnic, function(res){
-                    if(res.error != undefined){
-                        //$('.alert.new').show();
+                    if(res.error != undefined)
+                    {
+                        console.log('not found');
                         $('input[name="p_name"]').focus();
                         $('input[name="p_phone"], input[name="p_name"]').val('').prop('readonly', false);
-                    } else{
-                        //$('.cu.alert.existing').show();
+                    }
+                    else{
+                        console.log('User found');
                         $('input[name="p_phone"]').val(res.phone).prop('readonly', true);
                         $('input[name="p_name"]').val(res.name).prop('readonly', true).focus();
                     }
@@ -140,14 +142,11 @@ console.log('asdf');
             $.each($('#searchSchedule').serializeArray(), function() {
                 formData[this.name] = this.value;
             });
-
             if(!(formData.schedule_id>0)){
                 error = 1;
                 alert('Schedule not selected');
 
             }
-
-
             if(error) {
                 e.preventDefault();
             }
@@ -179,6 +178,8 @@ console.log('asdf');
 
             window.location.href = '{{ route('admin.departure.create') }}?route='+route+'&schedule='+schedule+'&bookingdate='+bookingdate;
         });
+
+        onRouteChange();
 
     });
 
@@ -222,9 +223,7 @@ console.log('asdf');
                     });
                     $('#to_stop').html(stops);
                     $('#from_stop').html('<option value="{{ Auth::user()->terminal_id }}">{{ Auth::user()->terminal->title ?? 'Terminal not found' }}</option>');
-                    /*$('#from_stop option[value="{{ Auth::user()->terminal_id }}"]')
-                            .prop('selected', true)
-                            .prop('readonly', true);*/
+
                     $('#to_stop option[value="'+res.to+'"]').prop('selected', true);
                     $('#getSchedules').click();
                 }
@@ -249,27 +248,105 @@ console.log('asdf');
         window.open( url, '_blank');
     }
 
-    function getTicketInfo(id){
-        console.log(id);
-        if(!$('.seats.seat-'+id).is(':checked'))
-        {
-            $('.seats.seat-'+id).prop('checked', true);
-            /*$.ajax({
-                url: '',
-                data: {},
-                type: 'GET',
-                success: function(result){
-                    console.log(result);
-                }
-            })*/
-        }
-        else {
-            $('.seats.seat-'+id).prop('checked', false);
-        }
+    function getTicketInfo(id, paid)
+    {
 
+        var data = $('tr[data-schedule].active').data();
+        data.bookingdate = $('#bookingdate').val();
+
+        console.log(data);
+
+        $.ajax({
+            url: '{{ route('admin.ticket.getInfo') }}/'+id,
+            data: data,
+            type: 'get',
+            success: function(res){
+                console.log(res);
+                $('input[name="p_cnic"]').val(res.p_cnic);
+                $('input[name="p_name"]').val(res.p_name);
+                $('input[name="p_phone"]').val(res.p_phone);
+                $('input[name="p_phone"], input[name="p_name"]').prop('readonly', true);
+
+                if(res.paid == 0)
+                {
+                    $('input[name="seat_numbers"]').val(res.seat_numbers);
+                    var seats = res.seat_numbers.split(",");
+                } else {
+                    $('input[name="seat_numbers"]').val('');
+                }
+            }
+        })
+
+        $('.seats.seat-'+id).prop('checked', !$('.seats.seat-'+id).is(':checked'));
         setSeat();
 
     }
+
+    window.onload = function() {
+        clock();
+        function clock() {
+            var now = new Date();
+            var TwentyFourHour = now.getHours();
+            var hour = now.getHours();
+            var min = now.getMinutes();
+            var mid = ' PM';
+            if (min < 10) min = "0" + min;
+            if (hour > 12) hour = hour - 12;
+            if(hour==0) hour=12;
+            if(TwentyFourHour < 12) mid = ' AM';
+
+            document.getElementById('timeclock').innerHTML = hour+':'+min + mid ;
+            setTimeout(clock, 1000);
+        }
+    }
+
+function cancelAllBooking()
+{
+    var bookingdate = $('#bookingdate').val();
+    var schedule_id = $('#schedules tr.active').data('schedule');
+    var schedule_time = $('#schedules tr.active td:nth-child(2)').text();
+    var schedule_name = $('#schedules tr.active td:nth-child(3)').text();
+    var bookingdate = $('#bookingdate').val();
+    if(schedule_id === undefined){
+        alert('Schedule not selected');
+        return false;
+    }
+    if(bookingdate === undefined && bookingdate == ''){
+        alert('Select booking date');
+        return false;
+    }
+
+    var data = { bookingdate: bookingdate, schedule: schedule_id }
+
+    var r = confirm("Are you sure?\nCancel all Booking of Route '"+schedule_name+"' at "+schedule_time+"!");
+    if (r == true) {
+        $.ajax({
+            url : '{{ route('admin.ticket.cancelAllBooking') }}',
+            type : 'get',
+            data : data,
+            success: function(res){
+                getBusSeats($('#schedules tr.active'), busSeatsURI);
+                alertify.success(res.msg);
+            }
+        })
+    }
+}
+
+function cancelBooking()
+{
+    var txt;
+    var ticketid = prompt("Please enter Booking ID");
+    if (ticketid != null || ticketid != "") {
+        url = '{{ route('admin.ticket.cancelBooking') }}'+"/"+ticketid;
+        console.log(url);
+        $.post(url, function(res){
+            console.log(res);
+            alert(res.msg);
+            getBusSeats($('#schedules tr.active'), busSeatsURI);
+        })
+    }
+    //document.getElementById("demo").innerHTML = txt;
+}
 
 
 

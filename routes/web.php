@@ -121,8 +121,11 @@ Route::name('admin.')->prefix('admin')->namespace('Admin')->group(function () {
         /*-- Ticket --*/
         //Route::post('ticket/{ticket}/paid', 'TicketController@paid')->name('ticket.paid');
         //Route::resource('{schedule}/ticket', 'TicketController');
-        Route::post('ticket/getInfo/{ticket?}', 'TicketController@cancel')->name('ticket.cancel');
+        Route::post('ticket/cancel/{ticket?}', 'TicketController@cancel')->name('ticket.cancel');
+        Route::post('ticket/cancelBooking/{ticket?}', 'TicketController@cancelBooking')->name('ticket.cancelBooking');
+        Route::get('ticket/getInfo/{ticket?}', 'TicketController@getInfo')->name('ticket.getInfo');
         Route::get('ticket/cancelAll', 'TicketController@cancelAll')->name('ticket.cancelAll');
+        Route::get('ticket/cancelAllBooking', 'TicketController@cancelAllBooking')->name('ticket.cancelAllBooking');
         Route::get('ticket/getSchedules', 'TicketController@getSchedules')->name('ticket.getSchedules');
         Route::get('ticket/getBusSeats', 'TicketController@getBusSeats')->name('ticket.getBusSeats');
         Route::get('ticket/booking', 'TicketController@booking')->name('ticket.booking');

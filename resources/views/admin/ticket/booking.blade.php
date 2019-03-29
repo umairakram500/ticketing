@@ -58,7 +58,7 @@ if($routeID > 0){
                         <div class="form-group">
                             <?php $routes = \App\Models\Route\Route::selection(); ?>
                             {{ Form::label('route', 'Route') }}
-                            {{ Form::select('route', $routes, $routeID, ['class' => 'form-control', 'placeholder'=>'- Select Route -', 'required'])}}
+                            {{ Form::select('route', $routes, $routeID, ['class' => 'form-control', 'required'])}}
                         </div><!--form-group-->
                     </div>
                     <div class="col-md-3">
@@ -99,6 +99,7 @@ if($routeID > 0){
                 </div>
             </div>
             <div class="col-md-3 text-center">
+                    <h4 id="timeclock" class="mb-2 bg-white p-3"></h4>
                     <h3 id="selected-route" class="mb-2 mt-3" >Route</h3>
                     <h3 id="selected-schedule">Schedule</h3>
 
@@ -278,7 +279,23 @@ if($routeID > 0){
                     <div class="form-group">
                         <button  class="btn btn-success btn-block py-3"><span class="h4">Book Seats</span></button>
                     </div>
-                    <div class="row guttor">
+
+
+                    <div class="row gutter">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <button type="button" onclick="cancelBooking()" class="btn btn-primary btn-block py-3">Cancel Booking By Booking ID</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <button type="button" onclick="cancelAllBooking()" class="btn btn-danger btn-block py-3">Cancel All Booking</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row gutter">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <button type="button"  onclick="getList('booklist')" class="btn btn-info btn-block py-3">Booking List</button>

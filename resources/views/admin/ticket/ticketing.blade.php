@@ -56,13 +56,17 @@ if($routeID > 0){
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <?php $route = \App\Models\Route\Route::where('to_terminal_id', '!=', $user_terminal->id)
+                            <?php /*
+                                   $route = \App\Models\Route\Route::where('to_terminal_id', '!=', $user_terminal->id)
                                     ->whereHas('stops', function($query){
                                         return $query->where('terminal_id', Auth::user()->terminal_id);
                                     })->selection();
+                                    */
+
+                            $route = Auth::user()->routes->pluck('title', 'id')->toArray();
                             ?>
                             {{ Form::label('route', 'Route') }}
-                            {{ Form::select('route', $route, $routeID, ['class' => 'form-control', 'placeholder'=>'- Select Route-', 'required'])}}
+                            {{ Form::select('route', $route, $routeID, ['class' => 'form-control', 'required'])}}
                         </div><!--form-group-->
                     </div>
                     <div class="col-md-3">
@@ -101,6 +105,7 @@ if($routeID > 0){
                 </div>
             </div>
             <div class="col-md-3 text-center">
+                <h4 id="timeclock" class="mb-2 bg-white p-3"></h4>
                 <h3 id="selected-route" class="mb-2 mt-3" >Route</h3>
                 <h3 id="selected-schedule">Schedule</h3>
             </div>
@@ -189,9 +194,11 @@ if($routeID > 0){
                     ?>
                     @for($i=1; $i<=$total_seats; $i++)
                         @if(isset($seats[$i]))
-                            <span class="booked icon-{{$seats[$i]=='M'?'man':'woman'}} paid_{{$btypes[$i]}}" onclick="getTicketInfo('{{ $i }}')">
+                            <span class="booked icon-{{$seats[$i]=='M'?'man':'woman'}} paid_{{$btypes[$i]}}" onclick="getTicketInfo('{{ $i }}', '{{ $btypes[$i] }}')">
                                 <span>{{$i}}</span>
-                                <input type="checkbox" data-seat="{{$i}}" value="{{$seats[$i]}}" class="seats seat-{{ $i }} hidden" name="seat[{{ $i }}]">
+                                @if($btypes[$i] == 0)
+                                <input type="checkbox" data-seat="{{$i}}" class="seats seat-{{ $i }} hidden" {{ $btypes[$i] ? '' : 'name="seat['.$i.']"' }} {{ $btypes[$i] ? '' : 'value="'.$seats[$i].'"' }} >
+                                @endif
                             </span>
                         @else
                             <span onclick="seatSelect({{ $i }})" class="seat_{{$i}}">{{ $i }}

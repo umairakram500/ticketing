@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Roles\Role;
+use App\Models\Route\Route;
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -58,11 +59,23 @@ class User extends Authenticatable
 
     /*
      * @return the list of Routes
+     * created by user routes
+     * */
+    /*public function routes()
+    {
+        return $this->hasMany(Route::class);
+    }*/
+
+    /*
+     * @return the list of Routes
+     * has preminssion to book tickets
      * */
     public function routes()
     {
-        return $this->hasMany(Route::class);
+        return $this->belongsToMany(Route::class);
     }
+
+
 
     public function city(){
         return $this->belongsTo(City::class);

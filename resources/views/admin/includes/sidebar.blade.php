@@ -181,7 +181,7 @@
         @endif
 
         <!-- staff -->
-        @if(Auth::user()->permission('Staff'))
+        @if(Auth::user()->permission('staff'))
         <li class="{{request()->is('admin/staff*')?'selected active':''}}">
             <a href="{{ route('admin.staff.index') }}">
                 <i class="fa fa-users"></i>
@@ -191,13 +191,11 @@
             <ul class="collapse">
                 <li>
                     <a href="{{ route('admin.staff.index') }}"
-                       class="{{request()->is('admin/staff')?'current':''}}">
-                        Staff List</a>
+                       class="{{request()->is('admin/staff')?'current':''}}">Staff List</a>
                 </li>
                 <li>
                     <a href="{{ route('admin.staff.create') }}"
-                       class="{{request()->is('admin/staff/create')?'current':''}}">
-                        Add Staff</a>
+                       class="{{request()->is('admin/staff/create')?'current':''}}">Add Staff</a>
                 </li>
                 <li>
                     <a href="{{ route('admin.staff.stafftype.index') }}"
@@ -206,8 +204,7 @@
                 </li>
                 <li>
                     <a href="{{ route('admin.staff.stafftype.create') }}"
-                       class="{{request()->is('admin/staff/stafftype/create')?'current':''}}">
-                        Add Staff Type</a>
+                       class="{{request()->is('admin/staff/stafftype/create')?'current':''}}">Add Staff Type</a>
                 </li>
             </ul>
         </li>
@@ -224,13 +221,11 @@
             <ul class="collapse">
                 <li>
                     <a href="{{ route('admin.bus.index') }}"
-                       class="{{request()->is('admin/bus')?'current':''}}">
-                        Buses List</a>
+                       class="{{request()->is('admin/bus')?'current':''}}">Buses List</a>
                 </li>
                 <li>
                     <a href="{{ route('admin.bus.create') }}"
-                       class="{{request()->is('admin/bus/create')?'current':''}}">
-                        Add Bus</a>
+                       class="{{request()->is('admin/bus/create')?'current':''}}">Add Bus</a>
                 </li>
                 <li>
                     <a href="{{ route('admin.bus.luxurytype.index') }}"

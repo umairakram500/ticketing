@@ -354,6 +354,23 @@ class TicketController extends Controller
         return response($data);
     }
 
+    public function cancelBooking($ticket)
+    {
+
+        $ticket = Ticket::where([
+            ['id', $ticket],
+            ['from_stop', Auth::user()->terminal_id],
+            ['paid', 0]
+        ])->get()->first();
+        if ($ticket != null) {
+            $ticket->delete();
+            $data = array('error'=>1, 'msg'=>'Booking cancel successfully.');
+        } else
+            $data = array('error'=>1, 'msg'=>'Booking Not found');
+
+        return response($data);
+    }
+
 
     // calculate refund amount on cancel
     private function refundDetection($ticket)
@@ -390,9 +407,17 @@ class TicketController extends Controller
         $schedule = $req->schedule;
         $bookingdate = $req->bookingdate;
 
-        $tickets = Ticket::where([['schedule_id', $schedule],['from_stop', Auth::user()->terminal_id]])->whereDate('booking_for', $bookingdate);
+        $tickets = Ticket::where([
+            ['schedule_id', $schedule],
+            ['from_stop', Auth::user()->terminal_id],
+            ['paid', 1]
+        ])->whereDate('booking_for', $bookingdate);
         $seats = TicketSeat::whereHas('ticket', function ($query) use ($schedule, $bookingdate) {
-            return $query->where([['schedule_id', $schedule],[['from_stop', Auth::user()->terminal_id]]])->whereDate('booking_for', $bookingdate);
+            return $query->where([
+                ['schedule_id', $schedule],
+                ['from_stop', Auth::user()->terminal_id],
+                ['paid', 1]
+            ])->whereDate('booking_for', $bookingdate);
         });
 
         $seats->delete();
@@ -415,6 +440,30 @@ class TicketController extends Controller
         return view('admin.ticket.list', $data);
     }
 
+    public function cancelAllBooking(Request $req)
+    {
+        $schedule = $req->schedule;
+        $bookingdate = $req->bookingdate;
+
+        $tickets = Ticket::where([
+            ['schedule_id', $schedule],
+            ['from_stop', Auth::user()->terminal_id],
+            ['paid', 0]
+        ])->whereDate('booking_for', $bookingdate);
+        $seats = TicketSeat::whereHas('ticket', function ($query) use ($schedule, $bookingdate) {
+            return $query->where([
+                ['schedule_id', $schedule],
+                ['from_stop', Auth::user()->terminal_id],
+                ['paid', 0]
+            ])->whereDate('booking_for', $bookingdate);
+        });
+
+        $seats->delete();
+        $tickets->delete();
+
+        return response(array('msg' => 'All tickets deleted successfully.'));
+    }
+
     public function issueByID($id, Request $request)
     {
         $ticket = Ticket::find($id);
@@ -427,5 +476,17 @@ class TicketController extends Controller
             $ticket->save();
             return response(array('error' => 0, 'ticket' => $ticket));
         }
+    }
+
+    public function getInfo($id, Request $request)
+    {
+        $ticket = Ticket::whereDate('booking_for', $request->bookingdate)->where([
+            ['schedule_id', $request->schedule],
+            ['route_id', $request->route]
+        ])->whereHas('seats', function($query) use ($id){
+            return $query->where('seat', $id);
+        })->get()->first();
+
+        return response($ticket);
     }
 }

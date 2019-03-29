@@ -8,7 +8,6 @@
     <div class="row guttor">
         <div class="col-xs-12">
 
-
             <div class="panel">
                 <div class="panel-body p-0">
                     <table class="table table-bordered table-striped">
@@ -57,10 +56,7 @@
         </div>
     </div>
 
-
 @endsection
-
-
 
 
 @push('after-js')

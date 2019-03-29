@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\DoRegister;
 use App\Models\City;
+use App\Models\Roles\Permission;
 use App\Models\Roles\Role;
+use App\Models\Roles\RolesPermission;
 use App\Models\Terminal;
 use App\Models\User;
+use App\Models\RouteUser;
 use App\Traits\CommenFunctions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -46,6 +49,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->routes);
+
         $request->validate([
             'name' => 'required|string|max:191',
             'email' => 'required|email|unique:users,email',
@@ -81,12 +86,14 @@ class UserController extends Controller
         }
 
         if($user->save()){
-
-            if(isset($request->permissions) && count($request->permissions)){
-                foreach($request->permissions as $permission){
-                    $user->givePermissionsTo($permission);
+            $permissions = RolesPermission::where('role_id', $request->role_id)->with('permission')->get();
+            if($permissions != null){
+                foreach($permissions as $permission){
+                    if(isset($permission->permission->slug))
+                        $user->givePermissionsTo($permission->permission->slug);
                 }
             }
+            $user->routes()->attach($request->routes);
             return redirect()->route('admin.users.index')->with('flash_success', 'User Add Successfully.');
         }
     }
@@ -110,6 +117,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        //dd($user->routes->pluck('id')->toArray());
         $data['user'] = $user;
         return view('admin.user.edit', $data);
     }
@@ -155,11 +163,14 @@ class UserController extends Controller
 
         if($user->save()){
             DB::table('users_permissions')->where('user_id', $user->id)->delete();
-            if($request->permissions != null){
-                foreach($request->permissions as $permission){
-                    $user->givePermissionsTo($permission);
+            $permissions = RolesPermission::where('role_id', $request->role_id)->get();
+            if($permissions != null){
+                foreach($permissions as $permission){
+                    DB::table('users_permissions')->insert(['user_id'=>$user->id, 'permission_id'=>$permission->permission_id]);
                 }
             }
+
+            $user->routes()->sync($request->routes != null ? $request->routes : array());
 
             return redirect()->route('admin.users.index')->with('flash_success', 'User updated Successfully.');
         }
